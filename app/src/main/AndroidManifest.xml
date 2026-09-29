@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -12,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
 
+        <!-- Login / Starting Page -->
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.LoginPage"
             android:exported="true">
 
             <intent-filter>
@@ -23,6 +25,58 @@
             </intent-filter>
 
         </activity>
+
+        <!-- Home -->
+        <activity
+            android:name=".activities.HomePage"
+            android:exported="false" />
+
+        <!-- Create Account -->
+        <activity
+            android:name=".activities.CreateAccount"
+            android:exported="false" />
+
+        <!-- Forgot Password -->
+        <activity
+            android:name=".activities.ForgotPassword"
+            android:exported="false" />
+
+        <!-- Profile -->
+        <activity
+            android:name=".activities.ProfilePage"
+            android:exported="false" />
+
+        <!-- Settings -->
+        <activity
+            android:name=".activities.SettingsPg"
+            android:exported="false" />
+
+        <!-- Pantry -->
+        <activity
+            android:name=".activities.PantryPage"
+            android:exported="false" />
+
+        <!-- Add / Edit Ingredient -->
+        <activity
+            android:name=".activities.IngredientPage"
+            android:exported="false" />
+
+        <!-- Recipes -->
+        <activity
+            android:name=".activities.RecipesPage"
+            android:exported="false" />
+
+        <!-- Recipe Details -->
+        <activity
+            android:name=".activities.DetailRecipe"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.SuggestedRecipesPage"
+            android:exported="false" />
+
+        <activity android:name=".activities.RecipeDetailSuggested"
+            android:exported="false" />
 
     </application>
 

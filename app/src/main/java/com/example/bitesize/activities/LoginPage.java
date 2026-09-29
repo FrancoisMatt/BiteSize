@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,22 +36,26 @@ public class LoginPage extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> validateLogin());
 
         // Forgot password
-        txtForgotPassword.setOnClickListener(view ->
-                Toast.makeText(
-                        LoginPage.this,
-                        "Forgot Password selected",
-                        Toast.LENGTH_SHORT
-                ).show()
-        );
+        txtForgotPassword.setOnClickListener(view -> {
+
+            Intent intent = new Intent(
+                    LoginPage.this,
+                    ForgotPassword.class
+            );
+
+            startActivity(intent);
+        });
 
         // Create account
-        txtCreateAccount.setOnClickListener(view ->
-                Toast.makeText(
-                        LoginPage.this,
-                        "Create Account selected",
-                        Toast.LENGTH_SHORT
-                ).show()
-        );
+        txtCreateAccount.setOnClickListener(view -> {
+
+            Intent intent = new Intent(
+                    LoginPage.this,
+                    CreateAccount.class
+            );
+
+            startActivity(intent);
+        });
     }
 
     private void validateLogin() {
@@ -76,5 +81,16 @@ public class LoginPage extends AppCompatActivity {
                 "Login details entered successfully",
                 Toast.LENGTH_SHORT
         ).show();
+
+        // Open Home Page
+        Intent intent = new Intent(
+                LoginPage.this,
+                HomePage.class
+        );
+
+        startActivity(intent);
+
+// Prevent user from going back to Login using Back button
+        finish();
     }
 }

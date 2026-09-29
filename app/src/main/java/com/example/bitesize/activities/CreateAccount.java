@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,83 +12,120 @@ import com.example.bitesize.R;
 
 public class CreateAccount extends AppCompatActivity {
 
-    //Fields specific for Account Creation
+    // Fields
     private EditText txtFirstname;
     private EditText txtSurname;
     private EditText txtUsername;
-
     private EditText txtEmail;
-
     private EditText txtPassword;
 
     private Button btnCreate;
 
-    //Override to use the XML specific layout
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createaccount);
 
+        // Link Java with XML
+        txtFirstname = findViewById(R.id.txtFirstname);
+        txtSurname = findViewById(R.id.txtSurname);
+        txtUsername = findViewById(R.id.txtUsername);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtPassword = findViewById(R.id.txtPassword);
 
-    //Linking Java with XML Components
-    txtFirstname = findViewById(R.id.txtFirstname);
-    txtSurname = findViewById(R.id.txtSurname);
-    txtUsername = findViewById(R.id.txtUsername);
-    txtEmail = findViewById(R.id.txtEmail);
-    txtPassword = findViewById(R.id.txtPassword);
+        // IMPORTANT - link the button
+        btnCreate = findViewById(R.id.btnCreate);
 
-    //Button
-    btnCreate.setOnClickListener(view -> CreateUser());
-
-}
-
-private void CreateUser() {
-
-    //String Inputs
-    String Firstname = txtFirstname.getText().toString().trim();
-    String Surname = txtSurname.getText().toString().trim();
-    String Email = txtEmail.getText().toString().trim();
-    String Username = txtUsername.getText().toString().trim();
-    String Password = txtPassword.getText().toString().trim();
-    ;
-
-    //String Validation frontend
-    if (TextUtils.isEmpty(Firstname)) {
-        txtUsername.setError("First Name is required");
-        txtUsername.requestFocus();
-        return;
+        // Create Account
+        btnCreate.setOnClickListener(view -> createUser());
     }
 
-    if (TextUtils.isEmpty(Surname)) {
-        txtPassword.setError("Surname is required");
-        txtPassword.requestFocus();
-        return;
+    private void createUser() {
+
+        String firstname =
+                txtFirstname.getText().toString().trim();
+
+        String surname =
+                txtSurname.getText().toString().trim();
+
+        String username =
+                txtUsername.getText().toString().trim();
+
+        String email =
+                txtEmail.getText().toString().trim();
+
+        String password =
+                txtPassword.getText().toString().trim();
+
+
+        // First Name
+        if (TextUtils.isEmpty(firstname)) {
+            txtFirstname.setError("First name is required");
+            txtFirstname.requestFocus();
+            return;
+        }
+
+
+        // Surname
+        if (TextUtils.isEmpty(surname)) {
+            txtSurname.setError("Surname is required");
+            txtSurname.requestFocus();
+            return;
+        }
+
+
+        // Email
+        if (TextUtils.isEmpty(email)) {
+            txtEmail.setError("Email is required");
+            txtEmail.requestFocus();
+            return;
+        }
+
+
+        // Email Format
+        if (!android.util.Patterns.EMAIL_ADDRESS
+                .matcher(email)
+                .matches()) {
+
+            txtEmail.setError("Please enter a valid email");
+            txtEmail.requestFocus();
+            return;
+        }
+
+
+        // Username
+        if (TextUtils.isEmpty(username)) {
+            txtUsername.setError("Username is required");
+            txtUsername.requestFocus();
+            return;
+        }
+
+
+        // Password
+        if (TextUtils.isEmpty(password)) {
+            txtPassword.setError("Password is required");
+            txtPassword.requestFocus();
+            return;
+        }
+
+
+        /*
+         * API call will be added later.
+         *
+         * POST /users
+         *
+         * firstname
+         * surname
+         * email
+         * username
+         * password
+         */
+
+
+        Toast.makeText(
+                CreateAccount.this,
+                "Account details validated successfully",
+                Toast.LENGTH_SHORT
+        ).show();
     }
-
-    if (TextUtils.isEmpty(Username)) {
-        txtUsername.setError("Username is required");
-        txtUsername.requestFocus();
-        return;
-    }
-
-    if (TextUtils.isEmpty(Email)) {
-        txtPassword.setError("Email is required");
-        txtPassword.requestFocus();
-        return;
-    }
-
-    if (TextUtils.isEmpty(Password)) {
-        txtPassword.setError("Password is required");
-        txtPassword.requestFocus();
-        return;
-    }
-
-    // Database/API login will be added later
-    Toast.makeText(
-            CreateAccount.this,
-            "Login details entered successfully",
-            Toast.LENGTH_SHORT
-    ).show();
-}
-
 }
