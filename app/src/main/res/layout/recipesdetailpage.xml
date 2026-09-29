@@ -19,7 +19,7 @@
 
             <!-- Recipe Name -->
             <TextView
-                android:id="@+id/txtRecipeName"
+                android:id="@+id/tvRecipeName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Recipe Name"
@@ -29,7 +29,7 @@
 
             <!-- Preparation Time -->
             <TextView
-                android:id="@+id/txtPrepTime"
+                android:id="@+id/tvPrepTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -49,7 +49,7 @@
 
             <!-- Ingredients -->
             <TextView
-                android:id="@+id/txtIngredients"
+                android:id="@+id/tvIngredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

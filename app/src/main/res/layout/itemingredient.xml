@@ -11,7 +11,7 @@
 
     <!-- Ingredient Name -->
     <TextView
-        android:id="@+id/txtIngredientName"
+        android:id="@+id/tvIngredientName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ingredient Name"
