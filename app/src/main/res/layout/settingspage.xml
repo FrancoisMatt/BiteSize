@@ -7,13 +7,14 @@
     android:background="#F2F2F2">
 
     <!-- Main Page -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!--  HEADER  -->
+        <!--  Header  -->
 
         <TextView
             android:id="@+id/txtSettings"
@@ -26,7 +27,7 @@
             android:textStyle="bold" />
 
 
-        <!--  PUSH NOTIFICATIONS  -->
+        <!--  Push Notifications  -->
 
         <Switch
             android:id="@+id/switchNotifications"
@@ -38,7 +39,7 @@
             android:checked="true" />
 
 
-        <!--  EXPIRY NOTIFICATIONS  -->
+        <!--  Expiry Notifications  -->
 
         <Switch
             android:id="@+id/switchExpiryNotifications"
@@ -51,7 +52,7 @@
             android:checked="true" />
 
 
-        <!--  EXPIRY REMINDER DAYS  -->
+        <!--  Expiry Dates Layout  -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,7 +88,7 @@
         </LinearLayout>
 
 
-        <!--  DARK MODE  -->
+        <!--  Dark Mode  -->
 
         <Switch
             android:id="@+id/switchDarkMode"
