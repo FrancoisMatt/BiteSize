@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Recipe Name -->
+            <TextView
+                android:id="@+id/txtRecipeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chicken Pasta"
+                android:textColor="#222222"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <!-- Preparation Time -->
+            <TextView
+                android:id="@+id/txtPrepTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Preparation time: 30 minutes"
+                android:textColor="#555555"
+                android:textSize="16sp" />
+
+            <!-- Ingredients Heading -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Required Ingredients"
+                android:textColor="#222222"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Ingredients -->
+            <TextView
+                android:id="@+id/txtIngredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#D9D9D9"
+                android:padding="15dp"
+                android:text="• Chicken - 500g&#10;• Pasta - 250g&#10;• Tomato - 2&#10;• Onion - 1"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:lineSpacingExtra="5dp" />
+
+            <!-- Ingredient Match -->
+            <TextView
+                android:id="@+id/txtIngredientMatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="You have 4 of 4 required ingredients"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <!-- Back -->
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="5dp"
+                    android:text="Back"
+                    android:textSize="16sp" />
+
+                <!-- Confirm -->
+                <Button
+                    android:id="@+id/btnConfirm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:text="Confirm"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

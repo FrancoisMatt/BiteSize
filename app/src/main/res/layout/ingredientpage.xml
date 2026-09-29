@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <!-- Main Page -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/txtIngredientHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="Add Ingredient"
+                android:textColor="#222222"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <!-- Ingredient Name -->
+            <EditText
+                android:id="@+id/txtIngredientName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingredient Name"
+                android:inputType="textCapWords"
+                android:padding="12dp"
+                android:singleLine="true" />
+
+            <!-- Quantity -->
+            <EditText
+                android:id="@+id/txtQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:hint="Quantity"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:singleLine="true" />
+
+            <!-- Unit Heading -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:text="Unit"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Unit Dropdown -->
+            <Spinner
+                android:id="@+id/spinnerUnit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#D9D9D9"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <!-- Expiry Date Heading -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="5dp"
+                android:text="Expiry Date"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Expiry Date -->
+            <EditText
+                android:id="@+id/txtExpiryDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="Select expiry date"
+                android:padding="12dp"
+                android:singleLine="true" />
+
+            <!-- Save -->
+            <Button
+                android:id="@+id/btnSaveIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Save Ingredient"
+                android:textSize="16sp" />
+
+            <!-- Delete -->
+            <Button
+                android:id="@+id/btnDeleteIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Delete Ingredient"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

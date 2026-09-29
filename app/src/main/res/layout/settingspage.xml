@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F2">
+
+    <!-- Main Page -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!--  Header  -->
+
+        <TextView
+            android:id="@+id/txtSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:text="Settings"
+            android:textColor="#222222"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+
+        <!--  Push Notifications  -->
+
+        <Switch
+            android:id="@+id/switchNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Push Notifications"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:checked="true" />
+
+
+        <!--  Expiry Notifications  -->
+
+        <Switch
+            android:id="@+id/switchExpiryNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Expiry Notifications"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:checked="true" />
+
+
+        <!--  Expiry Dates Layout  -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Reminder Label -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Notify before expiry"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Number of Days -->
+            <NumberPicker
+                android:id="@+id/numberPickerDays"
+                android:layout_width="60dp"
+                android:layout_height="70dp" />
+
+            <!-- Days Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="days"
+                android:textColor="#555555"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <!--  Dark Mode  -->
+
+        <Switch
+            android:id="@+id/switchDarkMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Dark Mode"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:checked="false" />
+
+    </LinearLayout>
+
+</FrameLayout>
