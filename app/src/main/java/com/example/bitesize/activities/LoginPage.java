@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -76,5 +77,16 @@ public class LoginPage extends AppCompatActivity {
                 "Login details entered successfully",
                 Toast.LENGTH_SHORT
         ).show();
+
+        // Open Home Page
+        Intent intent = new Intent(
+                LoginPage.this,
+                HomePage.class
+        );
+
+        startActivity(intent);
+
+// Prevent user from going back to Login using Back button
+        finish();
     }
 }

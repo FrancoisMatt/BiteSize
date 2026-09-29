@@ -64,7 +64,7 @@ public class HomePage extends AppCompatActivity {
 
         // Settings
         btnSettings.setOnClickListener(view -> {
-            Intent intent = new Intent(HomePage.this, SettingsPage.class);
+            Intent intent = new Intent(HomePage.this, SettingsPg.class);
             startActivity(intent);
         });
 
