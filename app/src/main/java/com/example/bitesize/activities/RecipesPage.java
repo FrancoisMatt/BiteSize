@@ -11,6 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bitesize.R;
+import com.example.bitesize.adapters.RecipeAdapter;
+import com.example.bitesize.models.Recipe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipesPage extends AppCompatActivity {
 
@@ -19,31 +24,82 @@ public class RecipesPage extends AppCompatActivity {
     private TextView txtRecipeResults;
     private RecyclerView recyclerRecipes;
 
+    private RecipeAdapter recipeAdapter;
+    private List<Recipe> recipeList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.recipespage);
 
-        // Linking Java with XML Components
-        txtSearchRecipe = findViewById(R.id.txtSearchRecipe);
-        txtRecipeResults = findViewById(R.id.txtRecipeResults);
-        recyclerRecipes = findViewById(R.id.recyclerRecipes);
+        // Linking Java with XML
+        txtSearchRecipe =
+                findViewById(R.id.txtSearchRecipe);
+
+        txtRecipeResults =
+                findViewById(R.id.txtRecipeResults);
+
+        recyclerRecipes =
+                findViewById(R.id.recyclerRecipes);
+
+
+        // Create Recipe List
+        recipeList = new ArrayList<>();
+
+
+        // Temporary Test Data
+        recipeList.add(
+                new Recipe(
+                        1,
+                        "Chicken Pasta",
+                        "Creamy chicken pasta",
+                        30
+                )
+        );
+
+        recipeList.add(
+                new Recipe(
+                        2,
+                        "Beef Stir Fry",
+                        "Beef and vegetables served with rice",
+                        25
+                )
+        );
+
+        recipeList.add(
+                new Recipe(
+                        3,
+                        "Tomato Pasta",
+                        "Simple tomato and herb pasta",
+                        20
+                )
+        );
+
+        recipeList.add(
+                new Recipe(
+                        4,
+                        "Chicken Salad",
+                        "Fresh salad with grilled chicken",
+                        15
+                )
+        );
+
 
         // RecyclerView Setup
         recyclerRecipes.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
-        /*
-         * Adapter will be added later.
-         *
-         * Example:
-         *
-         * recipeAdapter = new RecipeAdapter(recipeList);
-         * recyclerRecipes.setAdapter(recipeAdapter);
-         *
-         * Recipe data will eventually come from the API.
-         */
+        recipeAdapter =
+                new RecipeAdapter(
+                        RecipesPage.this,
+                        recipeList
+                );
+
+        recyclerRecipes.setAdapter(
+                recipeAdapter
+        );
 
 
         // Search Recipes
@@ -56,8 +112,6 @@ public class RecipesPage extends AppCompatActivity {
                             int start,
                             int count,
                             int after) {
-
-                        // Nothing required here
                     }
 
                     @Override
@@ -70,29 +124,26 @@ public class RecipesPage extends AppCompatActivity {
                         String searchText =
                                 s.toString().trim();
 
+                        // Filter RecyclerView
+                        recipeAdapter.filter(searchText);
+
                         if (searchText.isEmpty()) {
 
-                            txtRecipeResults.setText("All Recipes");
+                            txtRecipeResults.setText(
+                                    "All Recipes"
+                            );
 
                         } else {
 
-                            txtRecipeResults.setText("Search Results");
+                            txtRecipeResults.setText(
+                                    "Search Results"
+                            );
                         }
-
-                        /*
-                         * Filtering will be added when
-                         * RecipeAdapter is created.
-                         *
-                         * Example:
-                         *
-                         * recipeAdapter.filter(searchText);
-                         */
                     }
 
                     @Override
-                    public void afterTextChanged(Editable s) {
-
-                        // Nothing required here
+                    public void afterTextChanged(
+                            Editable s) {
                     }
                 }
         );

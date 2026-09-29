@@ -12,47 +12,108 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bitesize.R;
+import com.example.bitesize.adapters.PantryAdapter;
+import com.example.bitesize.models.Ingredient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PantryPage extends AppCompatActivity {
 
-    // Fields
     private EditText txtSearchIngredient;
     private RecyclerView recyclerPantry;
     private Button btnAddIngredient;
 
+    private PantryAdapter pantryAdapter;
+    private List<Ingredient> ingredientList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.pantrypage);
 
-        // Linking Java with XML components
-        txtSearchIngredient = findViewById(R.id.txtSearchIngredient);
-        recyclerPantry = findViewById(R.id.recyclerPantry);
-        btnAddIngredient = findViewById(R.id.btnAddIngredient);
+        // Link Java with XML
+        txtSearchIngredient =
+                findViewById(R.id.txtSearchIngredient);
 
-        // RecyclerView setup
+        recyclerPantry =
+                findViewById(R.id.recyclerPantry);
+
+        btnAddIngredient =
+                findViewById(R.id.btnAddIngredient);
+
+
+        // Create Ingredient List
+        ingredientList = new ArrayList<>();
+
+
+        // Temporary Test Data
+        ingredientList.add(
+                new Ingredient(
+                        1,
+                        "Chicken",
+                        500,
+                        "g",
+                        "2026-10-05"
+                )
+        );
+
+        ingredientList.add(
+                new Ingredient(
+                        2,
+                        "Milk",
+                        2,
+                        "L",
+                        "2026-10-02"
+                )
+        );
+
+        ingredientList.add(
+                new Ingredient(
+                        3,
+                        "Eggs",
+                        12,
+                        "Units",
+                        "2026-10-08"
+                )
+        );
+
+        ingredientList.add(
+                new Ingredient(
+                        4,
+                        "Tomatoes",
+                        6,
+                        "Units",
+                        "2026-10-03"
+                )
+        );
+
+
+        // RecyclerView
         recyclerPantry.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
-        /*
-         * Adapter will be added later when we connect
-         * the Pantry to the API/database.
-         *
-         * Example:
-         *
-         * pantryAdapter = new PantryAdapter(ingredientList);
-         * recyclerPantry.setAdapter(pantryAdapter);
-         */
+        pantryAdapter =
+                new PantryAdapter(
+                        PantryPage.this,
+                        ingredientList
+                );
+
+        recyclerPantry.setAdapter(
+                pantryAdapter
+        );
 
 
         // Add Ingredient
         btnAddIngredient.setOnClickListener(view -> {
 
-            Intent intent = new Intent(
-                    PantryPage.this,
-                    IngredientPage.class
-            );
+            Intent intent =
+                    new Intent(
+                            PantryPage.this,
+                            IngredientPage.class
+                    );
 
             startActivity(intent);
         });
@@ -68,8 +129,6 @@ public class PantryPage extends AppCompatActivity {
                             int start,
                             int count,
                             int after) {
-
-                        // Nothing required here
                     }
 
                     @Override
@@ -79,23 +138,14 @@ public class PantryPage extends AppCompatActivity {
                             int before,
                             int count) {
 
-                        String searchText =
-                                s.toString().trim();
-
-                        /*
-                         * Search/filter logic will be added
-                         * when the RecyclerView Adapter is created.
-                         *
-                         * Example:
-                         *
-                         * pantryAdapter.filter(searchText);
-                         */
+                        pantryAdapter.filter(
+                                s.toString()
+                        );
                     }
 
                     @Override
-                    public void afterTextChanged(Editable s) {
-
-                        // Nothing required here
+                    public void afterTextChanged(
+                            Editable s) {
                     }
                 }
         );

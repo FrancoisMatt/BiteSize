@@ -9,33 +9,35 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-    <!-- Ingredient Name -->
+    <!-- Recipe Name -->
     <TextView
-        android:id="@+id/txtIngredientName"
+        android:id="@+id/txtRecipeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ingredient Name"
+        android:text="Recipe Name"
         android:textColor="#222222"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- Quantity -->
+    <!-- Preparation Time -->
     <TextView
-        android:id="@+id/txtIngredientQuantity"
+        android:id="@+id/txtRecipePrepTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Quantity: 500 g"
+        android:text="Preparation Time: 30 minutes"
         android:textColor="#555555"
         android:textSize="14sp" />
 
-    <!-- Expiry Date -->
+    <!-- Instructions -->
     <TextView
-        android:id="@+id/txtIngredientExpiry"
+        android:id="@+id/txtRecipeInstructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:text="Expiry: 04 Oct 2026"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Recipe instructions will display here."
         android:textColor="#555555"
         android:textSize="14sp" />
 

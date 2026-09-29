@@ -24,9 +24,9 @@ public class DetailRecipe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipesdetailpage);
 
-        tvRecipeName = findViewById(R.id.tvRecipeName);
-        tvPrepTime = findViewById(R.id.tvPrepTime);
-        tvIngredients = findViewById(R.id.tvIngredients);
+        tvRecipeName = findViewById(R.id.txtRecipeName);
+        tvPrepTime = findViewById(R.id.txtPrepTime);
+        tvIngredients = findViewById(R.id.txtIngredients);
 
     }
 

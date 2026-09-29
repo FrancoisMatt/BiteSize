@@ -25,7 +25,7 @@ public class ItemIngredient extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.itemingredient);
 
-        tvIngredientName = findViewById(R.id.tvIngredientName);
+        tvIngredientName = findViewById(R.id.txtIngredientName);
         txtIngredientQuantity = findViewById(R.id.txtIngredientQuantity);
         txtIngredientExpiry = findViewById(R.id.txtIngredientExpiry);
 
