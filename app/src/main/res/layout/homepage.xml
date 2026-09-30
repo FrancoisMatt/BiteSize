@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@color/page_background">
 
     <!-- Main Page -->
     <LinearLayout
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="BiteSize"
-                android:textColor="#222222"
+                android:textColor="@color/primary_text"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:text="Settings"
-                    android:textColor="#333333"
+                    android:textColor="@color/primary_text"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:text="Logout"
-                    android:textColor="#333333"
+                    android:textColor="@color/primary_text"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -97,7 +97,7 @@
             android:layout_marginTop="25dp"
             android:layout_marginBottom="15dp"
             android:text="What would you like to do?"
-            android:textColor="#333333"
+            android:textColor="@color/secondary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 

@@ -24,7 +24,7 @@
         android:layout_marginEnd="30dp"
         android:orientation="vertical"
         android:padding="25dp"
-        android:background="#EFFFFFFF">
+        android:background="@color/page_background">
 
 
         <!-- Header -->
@@ -36,7 +36,7 @@
             android:textAlignment="center"
             android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="#222222" />
+            android:textColor="@color/primary_text" />
 
 
         <TextView
@@ -47,7 +47,7 @@
             android:text="Login to BiteSize"
             android:textAlignment="center"
             android:textSize="16sp"
-            android:textColor="#666666" />
+            android:textColor="@color/secondary_text" />
 
 
         <!-- Email -->

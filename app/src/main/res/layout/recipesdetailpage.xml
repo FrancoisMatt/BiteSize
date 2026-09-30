@@ -1,91 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@color/page_background"
+    android:fillViewport="true">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <LinearLayout
+
+        <!-- ============================================= -->
+        <!-- RECIPE NAME -->
+        <!-- ============================================= -->
+
+        <TextView
+            android:id="@+id/txtRecipeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <!-- Recipe Name -->
-            <TextView
-                android:id="@+id/txtRecipeName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Recipe Name"
-                android:textColor="#222222"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+            android:text="Recipe Name"
+            android:textColor="@color/primary_text"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
 
-            <!-- Preparation Time -->
-            <TextView
-                android:id="@+id/txtPrepTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Preparation time: 30 minutes"
-                android:textColor="#555555"
-                android:textSize="16sp" />
+        <!-- ============================================= -->
+        <!-- PREPARATION TIME -->
+        <!-- ============================================= -->
 
-            <!-- Ingredients Heading -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Ingredients"
-                android:textColor="#222222"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/txtPrepTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Preparation time: 30 minutes"
+            android:textColor="@color/secondary_text"
+            android:textSize="16sp" />
 
-            <!-- Ingredients -->
-            <TextView
-                android:id="@+id/txtIngredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="#D9D9D9"
-                android:padding="15dp"
-                android:text="• Ingredient 1&#10;• Ingredient 2&#10;• Ingredient 3"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:lineSpacingExtra="5dp" />
 
-            <!-- Preparation Heading -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Preparation"
-                android:textColor="#222222"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+        <!-- ============================================= -->
+        <!-- DIVIDER -->
+        <!-- ============================================= -->
 
-            <!-- Preparation Instructions -->
-            <TextView
-                android:id="@+id/txtInstructions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="#D9D9D9"
-                android:padding="15dp"
-                android:text="1. Prepare the ingredients.&#10;&#10;2. Cook the ingredients.&#10;&#10;3. Serve and enjoy."
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:lineSpacingExtra="4dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/secondary_text" />
 
-        </LinearLayout>
 
-    </ScrollView>
+        <!-- ============================================= -->
+        <!-- INGREDIENTS HEADER -->
+        <!-- ============================================= -->
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingredients"
+            android:textColor="@color/primary_text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+
+        <!-- ============================================= -->
+        <!-- INGREDIENT LIST -->
+        <!-- ============================================= -->
+
+        <TextView
+            android:id="@+id/txtIngredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="5dp"
+            android:text="Loading ingredients..."
+            android:textColor="@color/secondary_text"
+            android:textSize="17sp" />
+
+
+        <!-- ============================================= -->
+        <!-- DIVIDER -->
+        <!-- ============================================= -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/secondary_text" />
+
+
+        <!-- ============================================= -->
+        <!-- INSTRUCTIONS HEADER -->
+        <!-- ============================================= -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instructions"
+            android:textColor="@color/primary_text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+
+        <!-- ============================================= -->
+        <!-- INSTRUCTIONS -->
+        <!-- ============================================= -->
+
+        <TextView
+            android:id="@+id/txtInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="30dp"
+            android:lineSpacingExtra="5dp"
+            android:text="Recipe instructions"
+            android:textColor="@color/secondary_text"
+            android:textSize="17sp" />
+
+
+    </LinearLayout>
+
+</ScrollView>

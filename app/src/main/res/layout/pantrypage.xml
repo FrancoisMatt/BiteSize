@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@color/page_background">
 
     <!-- Main Page -->
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:text="My Pantry"
-            android:textColor="#222222"
+            android:textColor="@color/primary_text"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             android:text="Ingredients"
-            android:textColor="#333333"
+            android:textColor="@color/primary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
 

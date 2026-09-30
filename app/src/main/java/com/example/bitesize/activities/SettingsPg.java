@@ -1,13 +1,14 @@
 package com.example.bitesize.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.NumberPicker;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.content.Intent;
-import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.bitesize.R;
 import com.example.bitesize.models.User;
@@ -17,6 +18,7 @@ import com.example.bitesize.network.UserApi;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class SettingsPg extends AppCompatActivity {
 
@@ -46,6 +48,7 @@ public class SettingsPg extends AppCompatActivity {
 
     private User currentUser;
 
+
     /*
      * Prevents API updates while the initial values
      * are being loaded into the controls.
@@ -64,9 +67,10 @@ public class SettingsPg extends AppCompatActivity {
 
         setContentView(R.layout.settingspage);
 
+
         // =====================================================
-// GET LOGGED-IN USER
-// =====================================================
+        // GET LOGGED-IN USER
+        // =====================================================
 
         SharedPreferences preferences =
                 getSharedPreferences(
@@ -74,11 +78,13 @@ public class SettingsPg extends AppCompatActivity {
                         MODE_PRIVATE
                 );
 
+
         userId =
                 preferences.getInt(
                         "USER_ID",
                         -1
                 );
+
 
         if (userId == -1) {
 
@@ -88,11 +94,13 @@ public class SettingsPg extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
 
+
             Intent intent =
                     new Intent(
                             SettingsPg.this,
                             LoginPage.class
                     );
+
 
             startActivity(intent);
 
@@ -107,16 +115,27 @@ public class SettingsPg extends AppCompatActivity {
         // =====================================================
 
         switchNotifications =
-                findViewById(R.id.switchNotifications);
+                findViewById(
+                        R.id.switchNotifications
+                );
+
 
         switchExpiryNotifications =
-                findViewById(R.id.switchExpiryNotifications);
+                findViewById(
+                        R.id.switchExpiryNotifications
+                );
+
 
         switchDarkMode =
-                findViewById(R.id.switchDarkMode);
+                findViewById(
+                        R.id.switchDarkMode
+                );
+
 
         numberPickerDays =
-                findViewById(R.id.numberPickerDays);
+                findViewById(
+                        R.id.numberPickerDays
+                );
 
 
         // =====================================================
@@ -124,6 +143,7 @@ public class SettingsPg extends AppCompatActivity {
         // =====================================================
 
         numberPickerDays.setMinValue(1);
+
         numberPickerDays.setMaxValue(30);
 
 
@@ -131,9 +151,10 @@ public class SettingsPg extends AppCompatActivity {
         // API
         // =====================================================
 
-        userApi = ApiClient
-                .getClient()
-                .create(UserApi.class);
+        userApi =
+                ApiClient
+                        .getClient()
+                        .create(UserApi.class);
 
 
         // =====================================================
@@ -144,7 +165,7 @@ public class SettingsPg extends AppCompatActivity {
 
 
         // =====================================================
-        // LOAD SETTINGS FROM POSTGRESQL
+        // LOAD SETTINGS FROM DATABASE
         // =====================================================
 
         loadUserSettings();
@@ -152,7 +173,7 @@ public class SettingsPg extends AppCompatActivity {
 
 
     // =====================================================
-    // LOAD USER
+    // LOAD USER SETTINGS
     // =====================================================
 
     private void loadUserSettings() {
@@ -161,22 +182,27 @@ public class SettingsPg extends AppCompatActivity {
 
 
         userApi
-                .getUser(userId)
+                .getUserById(userId)
                 .enqueue(new Callback<User>() {
+
 
                     @Override
                     public void onResponse(
                             Call<User> call,
                             Response<User> response) {
 
+
                         if (response.isSuccessful()
                                 && response.body() != null) {
+
 
                             currentUser =
                                     response.body();
 
 
-                            // Load DB values into controls
+                            // =============================================
+                            // PUSH NOTIFICATIONS
+                            // =============================================
 
                             switchNotifications.setChecked(
                                     currentUser
@@ -184,33 +210,39 @@ public class SettingsPg extends AppCompatActivity {
                             );
 
 
+                            // =============================================
+                            // EXPIRY NOTIFICATIONS
+                            // =============================================
+
                             switchExpiryNotifications.setChecked(
                                     currentUser
                                             .isExpiryNotifications()
                             );
 
 
+                            // =============================================
+                            // EXPIRY DAYS
+                            // =============================================
+
                             int days =
                                     currentUser
                                             .getExpiryNotificationDays();
 
 
-                            // Keep value inside NumberPicker range
-
                             if (days < 1) {
+
                                 days = 1;
                             }
 
+
                             if (days > 30) {
+
                                 days = 30;
                             }
 
 
-                            numberPickerDays.setValue(days);
-
-
-                            switchDarkMode.setChecked(
-                                    currentUser.isDarkMode()
+                            numberPickerDays.setValue(
+                                    days
                             );
 
 
@@ -220,9 +252,62 @@ public class SettingsPg extends AppCompatActivity {
                             );
 
 
+                            // =============================================
+                            // DARK MODE SWITCH
+                            // =============================================
+
+                            switchDarkMode.setChecked(
+                                    currentUser.isDarkMode()
+                            );
+
+
+                            // =============================================
+                            // APPLY SAVED DARK MODE
+                            // =============================================
+
+                            boolean darkModeEnabled =
+                                    currentUser.isDarkMode();
+
+
+                            int requiredMode;
+
+                            if (darkModeEnabled) {
+
+                                requiredMode =
+                                        AppCompatDelegate
+                                                .MODE_NIGHT_YES;
+
+                            } else {
+
+                                requiredMode =
+                                        AppCompatDelegate
+                                                .MODE_NIGHT_NO;
+                            }
+
+
+                            /*
+                             * Only change the mode when necessary.
+                             * This helps prevent unnecessary
+                             * Activity recreation.
+                             */
+
+                            if (AppCompatDelegate
+                                    .getDefaultNightMode()
+                                    != requiredMode) {
+
+
+                                AppCompatDelegate
+                                        .setDefaultNightMode(
+                                                requiredMode
+                                        );
+                            }
+
+
                             settingsLoaded = true;
 
+
                         } else {
+
 
                             Toast.makeText(
                                     SettingsPg.this,
@@ -238,6 +323,7 @@ public class SettingsPg extends AppCompatActivity {
                     public void onFailure(
                             Call<User> call,
                             Throwable throwable) {
+
 
                         Toast.makeText(
                                 SettingsPg.this,
@@ -257,26 +343,34 @@ public class SettingsPg extends AppCompatActivity {
     private void setupListeners() {
 
 
-        // Push Notifications
+        // =================================================
+        // PUSH NOTIFICATIONS
+        // =================================================
 
         switchNotifications
                 .setOnCheckedChangeListener(
                         (buttonView, isChecked) -> {
 
+
                             if (!settingsLoaded) {
+
                                 return;
                             }
+
 
                             saveSettings();
                         }
                 );
 
 
-        // Expiry Notifications
+        // =================================================
+        // EXPIRY NOTIFICATIONS
+        // =================================================
 
         switchExpiryNotifications
                 .setOnCheckedChangeListener(
                         (buttonView, isChecked) -> {
+
 
                             numberPickerDays.setEnabled(
                                     isChecked
@@ -284,15 +378,19 @@ public class SettingsPg extends AppCompatActivity {
 
 
                             if (!settingsLoaded) {
+
                                 return;
                             }
+
 
                             saveSettings();
                         }
                 );
 
 
-        // Expiry Days
+        // =================================================
+        // EXPIRY DAYS
+        // =================================================
 
         numberPickerDays
                 .setOnValueChangedListener(
@@ -300,26 +398,63 @@ public class SettingsPg extends AppCompatActivity {
                          oldValue,
                          newValue) -> {
 
+
                             if (!settingsLoaded) {
+
                                 return;
                             }
+
 
                             saveSettings();
                         }
                 );
 
 
-        // Dark Mode
+        // =================================================
+        // DARK MODE
+        // =================================================
 
         switchDarkMode
                 .setOnCheckedChangeListener(
                         (buttonView, isChecked) -> {
 
+
                             if (!settingsLoaded) {
+
                                 return;
                             }
 
+
+                            // =============================================
+                            // SAVE SETTING
+                            // =============================================
+
                             saveSettings();
+
+
+                            // =============================================
+                            // CHANGE APP THEME
+                            // =============================================
+
+                            if (isChecked) {
+
+
+                                AppCompatDelegate
+                                        .setDefaultNightMode(
+                                                AppCompatDelegate
+                                                        .MODE_NIGHT_YES
+                                        );
+
+
+                            } else {
+
+
+                                AppCompatDelegate
+                                        .setDefaultNightMode(
+                                                AppCompatDelegate
+                                                        .MODE_NIGHT_NO
+                                        );
+                            }
                         }
                 );
     }
@@ -331,13 +466,16 @@ public class SettingsPg extends AppCompatActivity {
 
     private void saveSettings() {
 
+
         if (currentUser == null) {
 
             return;
         }
 
 
-        // Update settings on current User object
+        // =================================================
+        // UPDATE CURRENT USER OBJECT
+        // =================================================
 
         currentUser.setPushNotifications(
                 switchNotifications.isChecked()
@@ -359,9 +497,9 @@ public class SettingsPg extends AppCompatActivity {
         );
 
 
-        // =====================================================
-        // PUT USER
-        // =====================================================
+        // =================================================
+        // UPDATE USER THROUGH API
+        // =================================================
 
         userApi
                 .updateUser(
@@ -370,13 +508,16 @@ public class SettingsPg extends AppCompatActivity {
                 )
                 .enqueue(new Callback<User>() {
 
+
                     @Override
                     public void onResponse(
                             Call<User> call,
                             Response<User> response) {
 
+
                         if (response.isSuccessful()
                                 && response.body() != null) {
+
 
                             currentUser =
                                     response.body();
@@ -388,7 +529,9 @@ public class SettingsPg extends AppCompatActivity {
                                     Toast.LENGTH_SHORT
                             ).show();
 
+
                         } else {
+
 
                             Toast.makeText(
                                     SettingsPg.this,
@@ -404,6 +547,7 @@ public class SettingsPg extends AppCompatActivity {
                     public void onFailure(
                             Call<User> call,
                             Throwable throwable) {
+
 
                         Toast.makeText(
                                 SettingsPg.this,

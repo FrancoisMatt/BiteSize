@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@color/page_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="25dp"
             android:text="Profile"
-            android:textColor="#222222"
+            android:textColor="@color/primary_text"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,9 @@
             android:hint="First Name"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/secondary_text" />
 
 
         <!-- Surname -->
@@ -48,7 +50,9 @@
             android:hint="Surname"
             android:inputType="textPersonName"
             android:padding="12dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/secondary_text" />
 
 
         <!-- Email -->
@@ -61,7 +65,9 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/secondary_text" />
 
 
         <!-- User ID -->
@@ -75,7 +81,9 @@
             android:inputType="text"
             android:enabled="false"
             android:padding="12dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="@color/secondary_text"
+            android:textColorHint="@color/secondary_text" />
 
 
         <!-- Update Profile -->
