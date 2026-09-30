@@ -23,39 +23,28 @@ import retrofit2.Response;
 
 public class LoginPage extends AppCompatActivity {
 
-    // =====================================================
-    // FIELDS
-    // =====================================================
-
-    private EditText txtEmail;
+    private EditText txtUsername;
     private EditText txtPassword;
-
     private Button btnLogin;
-
     private TextView txtForgotPassword;
     private TextView txtCreateAccount;
 
     private UserApi userApi;
 
 
-    // =====================================================
-    // ON CREATE
-    // =====================================================
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.pagelogin);
 
 
         // =====================================================
-        // LINK JAVA TO XML
+        // LINK JAVA WITH XML
         // =====================================================
 
-        txtEmail =
-                findViewById(R.id.txtEmail);
+        txtUsername =
+                findViewById(R.id.txtUsername);
 
         txtPassword =
                 findViewById(R.id.txtPassword);
@@ -74,9 +63,10 @@ public class LoginPage extends AppCompatActivity {
         // API
         // =====================================================
 
-        userApi = ApiClient
-                .getClient()
-                .create(UserApi.class);
+        userApi =
+                ApiClient
+                        .getClient()
+                        .create(UserApi.class);
 
 
         // =====================================================
@@ -121,18 +111,17 @@ public class LoginPage extends AppCompatActivity {
     }
 
 
-    // =====================================================
+    // =========================================================
     // VALIDATE LOGIN
-    // =====================================================
+    // =========================================================
 
     private void validateLogin() {
 
-        String email =
-                txtEmail
+        String username =
+                txtUsername
                         .getText()
                         .toString()
                         .trim();
-
 
         String password =
                 txtPassword
@@ -141,14 +130,14 @@ public class LoginPage extends AppCompatActivity {
                         .trim();
 
 
-        // Email validation
-        if (TextUtils.isEmpty(email)) {
+        // Username / Email validation
+        if (TextUtils.isEmpty(username)) {
 
-            txtEmail.setError(
-                    "Email is required"
+            txtUsername.setError(
+                    "Username is required"
             );
 
-            txtEmail.requestFocus();
+            txtUsername.requestFocus();
 
             return;
         }
@@ -169,15 +158,15 @@ public class LoginPage extends AppCompatActivity {
 
         // Call API
         loginUser(
-                email,
+                username,
                 password
         );
     }
 
 
-    // =====================================================
-    // LOGIN USER THROUGH API
-    // =====================================================
+    // =========================================================
+    // LOGIN USER
+    // =========================================================
 
     private void loginUser(
             String email,
@@ -191,159 +180,124 @@ public class LoginPage extends AppCompatActivity {
                 );
 
 
-        // Prevent multiple login clicks
-        btnLogin.setEnabled(false);
+        userApi.login(
+                loginRequest
+        ).enqueue(new Callback<User>() {
 
 
-        userApi
-                .login(loginRequest)
-                .enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(
+                    Call<User> call,
+                    Response<User> response) {
+
+
+                if (response.isSuccessful()
+                        && response.body() != null) {
+
+
+                    User user =
+                            response.body();
 
 
                     // =================================================
-                    // API RESPONSE
+                    // SAVE LOGGED-IN USER INFORMATION
                     // =================================================
 
-                    @Override
-                    public void onResponse(
-                            Call<User> call,
-                            Response<User> response) {
+                    SharedPreferences preferences =
+                            getSharedPreferences(
+                                    "BiteSizePrefs",
+                                    MODE_PRIVATE
+                            );
 
 
-                        btnLogin.setEnabled(true);
+                    preferences
+                            .edit()
 
-
-                        // =============================================
-                        // LOGIN SUCCESS
-                        // =============================================
-
-                        if (response.isSuccessful()
-                                && response.body() != null) {
-
-
-                            User user =
-                                    response.body();
-
-
-                            // =========================================
-                            // SAVE LOGGED-IN USER
-                            // =========================================
-
-                            SharedPreferences preferences =
-                                    getSharedPreferences(
-                                            "BiteSizePrefs",
-                                            MODE_PRIVATE
-                                    );
-
-
-                            SharedPreferences.Editor editor =
-                                    preferences.edit();
-
-
-                            editor.putInt(
+                            .putInt(
                                     "USER_ID",
                                     user.getUserId()
-                            );
+                            )
 
+                            .putString(
+                                    "USER_FIRST_NAME",
+                                    user.getFirstName()
+                            )
 
-                            editor.putString(
+                            .putString(
+                                    "USER_LAST_NAME",
+                                    user.getLastName()
+                            )
+
+                            .putString(
                                     "USER_EMAIL",
                                     user.getEmail()
-                            );
+                            )
 
-
-                            editor.putString(
-                                    "USER_NAME",
-                                    user.getFirstName()
-                            );
-
-
-                            editor.apply();
-
-
-                            // =========================================
-                            // SUCCESS MESSAGE
-                            // =========================================
-
-                            Toast.makeText(
-                                    LoginPage.this,
-                                    "Welcome "
-                                            + user.getFirstName(),
-                                    Toast.LENGTH_SHORT
-                            ).show();
-
-
-                            // =========================================
-                            // OPEN HOME PAGE
-                            // =========================================
-
-                            Intent intent =
-                                    new Intent(
-                                            LoginPage.this,
-                                            HomePage.class
-                                    );
-
-
-                            startActivity(intent);
-
-
-                            // Prevent Back returning to Login
-                            finish();
-                        }
-
-
-                        // =============================================
-                        // INVALID LOGIN
-                        // =============================================
-
-                        else if (response.code() == 401) {
-
-
-                            Toast.makeText(
-                                    LoginPage.this,
-                                    "Invalid email or password",
-                                    Toast.LENGTH_LONG
-                            ).show();
-                        }
-
-
-                        // =============================================
-                        // OTHER API ERROR
-                        // =============================================
-
-                        else {
-
-
-                            Toast.makeText(
-                                    LoginPage.this,
-                                    "Login failed. Code: "
-                                            + response.code(),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                        }
-                    }
+                            .apply();
 
 
                     // =================================================
-                    // CONNECTION FAILURE
+                    // SUCCESS
                     // =================================================
 
-                    @Override
-                    public void onFailure(
-                            Call<User> call,
-                            Throwable throwable) {
+                    Toast.makeText(
+                            LoginPage.this,
+                            "Login successful",
+                            Toast.LENGTH_SHORT
+                    ).show();
 
 
-                        btnLogin.setEnabled(true);
+                    // =================================================
+                    // OPEN HOME PAGE
+                    // =================================================
+
+                    Intent intent =
+                            new Intent(
+                                    LoginPage.this,
+                                    HomePage.class
+                            );
 
 
-                        Toast.makeText(
-                                LoginPage.this,
-                                "API Error: "
-                                        + throwable.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
-                    }
-                });
+                    startActivity(intent);
+
+
+                    // Prevent user returning to login
+                    finish();
+
+
+                } else {
+
+
+                    // =================================================
+                    // INVALID LOGIN
+                    // =================================================
+
+                    Toast.makeText(
+                            LoginPage.this,
+                            "Invalid email or password",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+            }
+
+
+            @Override
+            public void onFailure(
+                    Call<User> call,
+                    Throwable t) {
+
+
+                // =====================================================
+                // API CONNECTION FAILED
+                // =====================================================
+
+                Toast.makeText(
+                        LoginPage.this,
+                        "Unable to connect to server: "
+                                + t.getMessage(),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 }

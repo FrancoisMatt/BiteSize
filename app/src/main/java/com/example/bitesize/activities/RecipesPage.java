@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,27 +14,43 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bitesize.R;
 import com.example.bitesize.adapters.RecipeAdapter;
 import com.example.bitesize.models.Recipe;
+import com.example.bitesize.network.ApiClient;
+import com.example.bitesize.network.RecipeApi;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RecipesPage extends AppCompatActivity {
 
-    // Fields
+    // =====================================================
+    // FIELDS
+    // =====================================================
+
     private EditText txtSearchRecipe;
     private TextView txtRecipeResults;
     private RecyclerView recyclerRecipes;
 
     private RecipeAdapter recipeAdapter;
-    private List<Recipe> recipeList;
+
+    private RecipeApi recipeApi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recipespage);
 
-        // Linking Java with XML
+
+        // =====================================================
+        // LINK JAVA WITH XML
+        // =====================================================
+
         txtSearchRecipe =
                 findViewById(R.id.txtSearchRecipe);
 
@@ -44,65 +61,48 @@ public class RecipesPage extends AppCompatActivity {
                 findViewById(R.id.recyclerRecipes);
 
 
-        // Create Recipe List
-        recipeList = new ArrayList<>();
+        // =====================================================
+        // RECYCLER VIEW SETUP
+        // =====================================================
 
-
-        // Temporary Test Data
-        recipeList.add(
-                new Recipe(
-                        1,
-                        "Chicken Pasta",
-                        "Creamy chicken pasta",
-                        30
-                )
-        );
-
-        recipeList.add(
-                new Recipe(
-                        2,
-                        "Beef Stir Fry",
-                        "Beef and vegetables served with rice",
-                        25
-                )
-        );
-
-        recipeList.add(
-                new Recipe(
-                        3,
-                        "Tomato Pasta",
-                        "Simple tomato and herb pasta",
-                        20
-                )
-        );
-
-        recipeList.add(
-                new Recipe(
-                        4,
-                        "Chicken Salad",
-                        "Fresh salad with grilled chicken",
-                        15
-                )
-        );
-
-
-        // RecyclerView Setup
         recyclerRecipes.setLayoutManager(
                 new LinearLayoutManager(this)
         );
 
+
         recipeAdapter =
                 new RecipeAdapter(
                         RecipesPage.this,
-                        recipeList
+                        new ArrayList<>()
                 );
+
 
         recyclerRecipes.setAdapter(
                 recipeAdapter
         );
 
 
-        // Search Recipes
+        // =====================================================
+        // API SETUP
+        // =====================================================
+
+        recipeApi =
+                ApiClient
+                        .getClient()
+                        .create(RecipeApi.class);
+
+
+        // =====================================================
+        // LOAD ALL RECIPES
+        // =====================================================
+
+        loadRecipes();
+
+
+        // =====================================================
+        // SEARCH RECIPES
+        // =====================================================
+
         txtSearchRecipe.addTextChangedListener(
                 new TextWatcher() {
 
@@ -114,6 +114,7 @@ public class RecipesPage extends AppCompatActivity {
                             int after) {
                     }
 
+
                     @Override
                     public void onTextChanged(
                             CharSequence s,
@@ -124,8 +125,11 @@ public class RecipesPage extends AppCompatActivity {
                         String searchText =
                                 s.toString().trim();
 
-                        // Filter RecyclerView
-                        recipeAdapter.filter(searchText);
+
+                        recipeAdapter.filter(
+                                searchText
+                        );
+
 
                         if (searchText.isEmpty()) {
 
@@ -141,9 +145,87 @@ public class RecipesPage extends AppCompatActivity {
                         }
                     }
 
+
                     @Override
                     public void afterTextChanged(
                             Editable s) {
+                    }
+                }
+        );
+    }
+
+
+    // =====================================================
+    // LOAD RECIPES FROM API
+    // =====================================================
+
+    private void loadRecipes() {
+
+        Call<List<Recipe>> call =
+                recipeApi.getAllRecipes();
+
+
+        call.enqueue(
+                new Callback<List<Recipe>>() {
+
+                    @Override
+                    public void onResponse(
+                            Call<List<Recipe>> call,
+                            Response<List<Recipe>> response) {
+
+
+                        if (response.isSuccessful()
+                                && response.body() != null) {
+
+
+                            List<Recipe> recipes =
+                                    response.body();
+
+
+                            recipeAdapter.setRecipes(
+                                    recipes
+                            );
+
+
+                            if (recipes.isEmpty()) {
+
+                                txtRecipeResults.setText(
+                                        "No recipes available"
+                                );
+
+                            } else {
+
+                                txtRecipeResults.setText(
+                                        "All Recipes ("
+                                                + recipes.size()
+                                                + ")"
+                                );
+                            }
+
+
+                        } else {
+
+                            Toast.makeText(
+                                    RecipesPage.this,
+                                    "Unable to load recipes",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(
+                            Call<List<Recipe>> call,
+                            Throwable throwable) {
+
+
+                        Toast.makeText(
+                                RecipesPage.this,
+                                "API Error: "
+                                        + throwable.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 }
         );

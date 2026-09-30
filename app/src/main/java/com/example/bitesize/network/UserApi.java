@@ -1,8 +1,7 @@
 package com.example.bitesize.network;
 
-import com.example.bitesize.models.User;
 import com.example.bitesize.models.LoginRequest;
-import com.example.bitesize.models.ResetPasswordRequest;
+import com.example.bitesize.models.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,30 +12,24 @@ import retrofit2.http.Path;
 
 public interface UserApi {
 
-    @GET("api/users/{id}")
-    Call<User> getUser(
-            @Path("id") int userId
-    );
-
-
-    @PUT("api/users/{id}")
-    Call<User> updateUser(
-            @Path("id") int userId,
-            @Body User user
-    );
-
+    // Login
     @POST("api/users/login")
     Call<User> login(
             @Body LoginRequest loginRequest
     );
 
-    @POST("api/users")
-    Call<User> createUser(
-            @Body User user
+
+    // Get logged-in user's profile
+    @GET("api/users/{id}")
+    Call<User> getUserById(
+            @Path("id") int userId
     );
 
-    @POST("api/users/reset-password")
-    Call<User> resetPassword(
-            @Body ResetPasswordRequest request
+
+    // Update profile
+    @PUT("api/users/{id}")
+    Call<User> updateUser(
+            @Path("id") int userId,
+            @Body User user
     );
 }

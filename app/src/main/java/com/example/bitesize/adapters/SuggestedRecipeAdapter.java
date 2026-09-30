@@ -21,47 +21,57 @@ import java.util.List;
 public class SuggestedRecipeAdapter
         extends RecyclerView.Adapter<SuggestedRecipeAdapter.RecipeViewHolder> {
 
-    // Context
     private final Context context;
 
-    // Recipe Lists
     private final List<Recipe> recipeList;
     private final List<Recipe> recipeListFull;
 
 
-    // Constructor
+    // =====================================================
+    // CONSTRUCTOR
+    // =====================================================
+
     public SuggestedRecipeAdapter(
             Context context,
             List<Recipe> recipeList) {
 
         this.context = context;
-        this.recipeList = recipeList;
 
-        // Keep original list for searching/filtering
-        this.recipeListFull = new ArrayList<>(recipeList);
+        this.recipeList =
+                recipeList;
+
+        this.recipeListFull =
+                new ArrayList<>(recipeList);
     }
 
 
-    // Create RecyclerView Row
+    // =====================================================
+    // CREATE RECYCLER VIEW ROW
+    // =====================================================
+
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(
             @NonNull ViewGroup parent,
             int viewType) {
 
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(
-                        R.layout.recipeitem,
-                        parent,
-                        false
-                );
+        View view =
+                LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(
+                                R.layout.recipeitem,
+                                parent,
+                                false
+                        );
 
         return new RecipeViewHolder(view);
     }
 
 
-    // Populate RecyclerView Row
+    // =====================================================
+    // POPULATE RECYCLER VIEW ROW
+    // =====================================================
+
     @Override
     public void onBindViewHolder(
             @NonNull RecipeViewHolder holder,
@@ -80,7 +90,7 @@ public class SuggestedRecipeAdapter
         // Preparation Time
         holder.txtRecipePrepTime.setText(
                 "Preparation Time: "
-                        + recipe.getPrepTime()
+                        + recipe.getPrepTimeMinutes()
                         + " minutes"
         );
 
@@ -97,35 +107,35 @@ public class SuggestedRecipeAdapter
 
         holder.itemView.setOnClickListener(view -> {
 
-            Intent intent = new Intent(
-                    context,
-                    RecipeDetailSuggested.class
+            Intent intent =
+                    new Intent(
+                            context,
+                            RecipeDetailSuggested.class
+                    );
+
+
+            // Recipe ID
+            intent.putExtra(
+                    "recipeId",
+                    recipe.getRecipeId()
             );
 
 
-            // Send Recipe Name
+            // Recipe Name
             intent.putExtra(
                     "recipeName",
                     recipe.getName()
             );
 
 
-            // Send Recipe ID
-            // We will need this later for the API/database
-            intent.putExtra(
-                    "recipeId",
-                    recipe.getId()
-            );
-
-
-            // Send Preparation Time
+            // Preparation Time
             intent.putExtra(
                     "prepTime",
-                    recipe.getPrepTime()
+                    recipe.getPrepTimeMinutes()
             );
 
 
-            // Send Instructions
+            // Instructions
             intent.putExtra(
                     "instructions",
                     recipe.getInstructions()
@@ -165,14 +175,12 @@ public class SuggestedRecipeAdapter
             }
 
 
-            // Send Ingredient Text
             intent.putExtra(
                     "ingredients",
                     ingredients.toString()
             );
 
 
-            // Send Ingredient Count
             int ingredientCount = 0;
 
             if (recipe.getIngredients() != null) {
@@ -181,19 +189,22 @@ public class SuggestedRecipeAdapter
                         recipe.getIngredients().size();
             }
 
+
             intent.putExtra(
                     "ingredientCount",
                     ingredientCount
             );
 
 
-            // Open Suggested Recipe Detail
             context.startActivity(intent);
         });
     }
 
 
-    // Number of Recipes
+    // =====================================================
+    // NUMBER OF RECIPES
+    // =====================================================
+
     @Override
     public int getItemCount() {
 
@@ -201,16 +212,49 @@ public class SuggestedRecipeAdapter
     }
 
 
-    // =========================================================
-    // SEARCH FILTER
-    // =========================================================
+    // =====================================================
+    // SET RECIPES FROM API
+    // =====================================================
 
-    public void filter(String searchText) {
+    public void setRecipes(
+            List<Recipe> recipes) {
+
+        /*
+         * recipeList is the list currently displayed
+         * by the RecyclerView.
+         */
+        recipeList.clear();
+
+        recipeList.addAll(
+                recipes
+        );
+
+
+        /*
+         * recipeListFull stores the complete API result
+         * so searching can restore/filter the original list.
+         */
+        recipeListFull.clear();
+
+        recipeListFull.addAll(
+                recipes
+        );
+
+
+        notifyDataSetChanged();
+    }
+
+
+    // =====================================================
+    // SEARCH FILTER
+    // =====================================================
+
+    public void filter(
+            String searchText) {
 
         recipeList.clear();
 
 
-        // No search - show all suggested recipes
         if (searchText == null ||
                 searchText.trim().isEmpty()) {
 
@@ -234,26 +278,25 @@ public class SuggestedRecipeAdapter
                                 .toLowerCase()
                                 .contains(search)) {
 
-                    recipeList.add(recipe);
+                    recipeList.add(
+                            recipe
+                    );
                 }
             }
         }
 
 
-        // Refresh RecyclerView
         notifyDataSetChanged();
     }
 
 
-    // =========================================================
+    // =====================================================
     // FORMAT QUANTITY
-    // =========================================================
+    // =====================================================
 
     private String formatQuantity(
             double quantity) {
 
-        // Prevent values like 500.0
-        // Display 500 instead
         if (quantity ==
                 Math.floor(quantity)) {
 
@@ -262,13 +305,16 @@ public class SuggestedRecipeAdapter
             );
         }
 
-        return String.valueOf(quantity);
+
+        return String.valueOf(
+                quantity
+        );
     }
 
 
-    // =========================================================
+    // =====================================================
     // VIEW HOLDER
-    // =========================================================
+    // =====================================================
 
     public static class RecipeViewHolder
             extends RecyclerView.ViewHolder {
@@ -284,7 +330,6 @@ public class SuggestedRecipeAdapter
             super(itemView);
 
 
-            // Link RecyclerView Row XML
             txtRecipeName =
                     itemView.findViewById(
                             R.id.txtRecipeName

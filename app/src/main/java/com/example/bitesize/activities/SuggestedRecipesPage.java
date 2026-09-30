@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,23 +13,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bitesize.R;
 import com.example.bitesize.adapters.SuggestedRecipeAdapter;
-import com.example.bitesize.models.Ingredient;
 import com.example.bitesize.models.Recipe;
-import com.example.bitesize.models.RecipeIngredient;
-import com.example.bitesize.utils.RecipeCompare;
+import com.example.bitesize.network.ApiClient;
+import com.example.bitesize.network.RecipeApi;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SuggestedRecipesPage extends AppCompatActivity {
 
-    // Fields
+    // =====================================================
+    // FIELDS
+    // =====================================================
+
     private EditText txtSearchSuggestedRecipe;
     private TextView txtSuggestedResults;
     private RecyclerView recyclerSuggestedRecipes;
 
+    private SuggestedRecipeAdapter adapter;
+
+    private RecipeApi recipeApi;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.suggestedrecipepage);
@@ -57,191 +70,26 @@ public class SuggestedRecipesPage extends AppCompatActivity {
         );
 
 
-        // =====================================================
-        // TEMPORARY USER PANTRY
-        // API DATA WILL REPLACE THIS LATER
-        // =====================================================
-
-        List<Ingredient> pantry = new ArrayList<>();
-
-        pantry.add(
-                new Ingredient(
-                        1,
-                        "Chicken",
-                        1,
-                        "kg",
-                        "2026-10-10"
-                )
-        );
-
-        pantry.add(
-                new Ingredient(
-                        2,
-                        "Tomatoes",
-                        5,
-                        "units",
-                        "2026-10-05"
-                )
-        );
-
-        pantry.add(
-                new Ingredient(
-                        3,
-                        "Rice",
-                        1,
-                        "kg",
-                        "2027-01-01"
-                )
-        );
-
-        pantry.add(
-                new Ingredient(
-                        4,
-                        "Onions",
-                        3,
-                        "units",
-                        "2026-10-08"
-                )
-        );
-
-
-        // =====================================================
-        // RECIPE 1 - SHOULD PASS
-        // =====================================================
-
-        List<RecipeIngredient> chickenRiceIngredients =
-                new ArrayList<>();
-
-
-        // Chicken - Pantry has 1kg
-        // Recipe requires 500g
-        chickenRiceIngredients.add(
-                new RecipeIngredient(
-                        1,
-                        1,
-                        "Chicken",
-                        500,
-                        "g"
-                )
-        );
-
-
-        // Tomato - Pantry has "Tomatoes"
-        // Tests singular/plural matching
-        chickenRiceIngredients.add(
-                new RecipeIngredient(
-                        2,
-                        1,
-                        "Tomato",
-                        2,
-                        "units"
-                )
-        );
-
-
-        // Rice - Pantry has 1kg
-        // Recipe requires 250g
-        chickenRiceIngredients.add(
-                new RecipeIngredient(
-                        3,
-                        1,
-                        "Rice",
-                        250,
-                        "g"
-                )
-        );
-
-
-        Recipe chickenRice = new Recipe(
-                1,
-                "Chicken and Rice",
-                "Cook chicken, rice and tomatoes together.",
-                30,
-                chickenRiceIngredients
-        );
-
-
-        // =====================================================
-        // RECIPE 2 - SHOULD FAIL
-        // USER DOES NOT HAVE BEEF
-        // =====================================================
-
-        List<RecipeIngredient> beefRiceIngredients =
-                new ArrayList<>();
-
-
-        beefRiceIngredients.add(
-                new RecipeIngredient(
-                        4,
-                        2,
-                        "Beef",
-                        500,
-                        "g"
-                )
-        );
-
-
-        beefRiceIngredients.add(
-                new RecipeIngredient(
-                        5,
-                        2,
-                        "Rice",
-                        250,
-                        "g"
-                )
-        );
-
-
-        Recipe beefRice = new Recipe(
-                2,
-                "Beef and Rice",
-                "Cook beef and rice together.",
-                25,
-                beefRiceIngredients
-        );
-
-
-        // =====================================================
-        // ALL RECIPES
-        // =====================================================
-
-        List<Recipe> allRecipes = new ArrayList<>();
-
-        allRecipes.add(chickenRice);
-        allRecipes.add(beefRice);
-
-
-        // =====================================================
-        // STRICT RECIPE MATCHING
-        // =====================================================
-
-        List<Recipe> suggestedRecipes =
-                new ArrayList<>();
-
-
-        for (Recipe recipe : allRecipes) {
-
-            if (RecipeCompare.canMakeRecipe(
-                    recipe,
-                    pantry)) {
-
-                // Recipe passed ALL requirements
-                suggestedRecipes.add(recipe);
-            }
-        }
-
-
-        // =====================================================
-        // CONNECT SUGGESTED RECIPES TO RECYCLER VIEW
-        // =====================================================
-
-        SuggestedRecipeAdapter adapter =
+        adapter =
                 new SuggestedRecipeAdapter(
                         SuggestedRecipesPage.this,
-                        suggestedRecipes
+                        new ArrayList<>()
                 );
 
-        recyclerSuggestedRecipes.setAdapter(adapter);
+
+        recyclerSuggestedRecipes.setAdapter(
+                adapter
+        );
+
+
+        // =====================================================
+        // API SETUP
+        // =====================================================
+
+        recipeApi =
+                ApiClient
+                        .getClient()
+                        .create(RecipeApi.class);
 
 
         // =====================================================
@@ -288,8 +136,10 @@ public class SuggestedRecipesPage extends AppCompatActivity {
                         }
 
 
-                        // Filter suggested recipes
-                        adapter.filter(searchText);
+                        // Filter recipes currently loaded
+                        adapter.filter(
+                                searchText
+                        );
                     }
 
 
@@ -301,5 +151,174 @@ public class SuggestedRecipesPage extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+
+    // =====================================================
+    // LOAD SUGGESTED RECIPES FROM API
+    // =====================================================
+
+    private void loadSuggestedRecipes() {
+
+
+        // =====================================================
+        // GET LOGGED-IN USER ID
+        // =====================================================
+
+        int userId =
+                getSharedPreferences(
+                        "BiteSizePrefs",
+                        MODE_PRIVATE
+                )
+                        .getInt(
+                                "USER_ID",
+                                -1
+                        );
+
+
+        // =====================================================
+        // CHECK USER
+        // =====================================================
+
+        if (userId == -1) {
+
+            txtSuggestedResults.setText(
+                    "Unable to load recipes"
+            );
+
+
+            Toast.makeText(
+                    SuggestedRecipesPage.this,
+                    "Unable to find logged-in user",
+                    Toast.LENGTH_LONG
+            ).show();
+
+
+            return;
+        }
+
+
+        // =====================================================
+        // CALL API
+        // =====================================================
+
+        Call<List<Recipe>> call =
+                recipeApi.getSuggestedRecipes(
+                        userId
+                );
+
+
+        call.enqueue(
+                new Callback<List<Recipe>>() {
+
+                    // =================================================
+                    // API RESPONSE
+                    // =================================================
+
+                    @Override
+                    public void onResponse(
+                            Call<List<Recipe>> call,
+                            Response<List<Recipe>> response) {
+
+
+                        if (response.isSuccessful()
+                                && response.body() != null) {
+
+
+                            List<Recipe> recipes =
+                                    response.body();
+
+
+                            // Update RecyclerView
+                            adapter.setRecipes(
+                                    recipes
+                            );
+
+
+                            // =========================================
+                            // DISPLAY RESULT COUNT
+                            // =========================================
+
+                            if (recipes.isEmpty()) {
+
+                                txtSuggestedResults.setText(
+                                        "No recipes available with your current pantry"
+                                );
+
+                            } else {
+
+                                txtSuggestedResults.setText(
+                                        "Suggested for you ("
+                                                + recipes.size()
+                                                + ")"
+                                );
+                            }
+
+
+                        } else {
+
+
+                            txtSuggestedResults.setText(
+                                    "Unable to load recipes"
+                            );
+
+
+                            Toast.makeText(
+                                    SuggestedRecipesPage.this,
+                                    "Unable to load suggested recipes",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+
+
+                    // =================================================
+                    // API FAILURE
+                    // =================================================
+
+                    @Override
+                    public void onFailure(
+                            Call<List<Recipe>> call,
+                            Throwable throwable) {
+
+
+                        txtSuggestedResults.setText(
+                                "Unable to load recipes"
+                        );
+
+
+                        Toast.makeText(
+                                SuggestedRecipesPage.this,
+                                "API Error: "
+                                        + throwable.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+        );
+    }
+
+
+    // =====================================================
+    // REFRESH PAGE
+    // =====================================================
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+
+
+        /*
+         * onResume is called after onCreate,
+         * therefore this loads the recipes when
+         * the page opens and also refreshes them
+         * when returning from another page.
+         */
+
+        if (recipeApi != null) {
+
+            loadSuggestedRecipes();
+        }
     }
 }

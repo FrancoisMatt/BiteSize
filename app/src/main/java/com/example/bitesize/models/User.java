@@ -21,24 +21,6 @@ public class User {
     public User() {
     }
 
-    public User(
-            String firstName,
-            String lastName,
-            String email,
-            String passwordHash) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.passwordHash = passwordHash;
-
-        // Default settings for a new account
-        this.pushNotifications = true;
-        this.expiryNotifications = true;
-        this.expiryNotificationDays = 3;
-        this.darkMode = false;
-    }
-
 
     public int getUserId() {
         return userId;
@@ -131,6 +113,7 @@ public class User {
 
 
     public String getUpdatedAt() {
+
         return updatedAt;
     }
 

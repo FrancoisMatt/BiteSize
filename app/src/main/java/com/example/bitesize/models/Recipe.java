@@ -4,54 +4,48 @@ import java.util.List;
 
 public class Recipe {
 
-    // Model fields
-    private int id;
-    private String name;
-    private String instructions;
-    private int prepTime;
+    // =====================================================
+    // MODEL FIELDS
+    // =====================================================
 
-    // Required ingredients for strict recipe matching
+    private Integer recipeId;
+
+    private String name;
+
+    private String description;
+
+    private String instructions;
+
+    private Integer prepTimeMinutes;
+
+    private Integer servings;
+
+    private String createdAt;
+
+    private String updatedAt;
+
     private List<RecipeIngredient> ingredients;
 
 
-    // Constructor used by normal Recipes page
-    public Recipe(
-            int id,
-            String name,
-            String instructions,
-            int prepTime) {
+    // =====================================================
+    // EMPTY CONSTRUCTOR
+    // REQUIRED FOR API / JSON MAPPING
+    // =====================================================
 
-        this.id = id;
-        this.name = name;
-        this.instructions = instructions;
-        this.prepTime = prepTime;
+    public Recipe() {
     }
 
 
-    // Constructor used by Suggested Recipes
-    public Recipe(
-            int id,
-            String name,
-            String instructions,
-            int prepTime,
-            List<RecipeIngredient> ingredients) {
+    // =====================================================
+    // GETTERS AND SETTERS
+    // =====================================================
 
-        this.id = id;
-        this.name = name;
-        this.instructions = instructions;
-        this.prepTime = prepTime;
-        this.ingredients = ingredients;
+    public Integer getRecipeId() {
+        return recipeId;
     }
 
-
-    // Getters && Setters
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setRecipeId(Integer recipeId) {
+        this.recipeId = recipeId;
     }
 
 
@@ -64,6 +58,15 @@ public class Recipe {
     }
 
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
     public String getInstructions() {
         return instructions;
     }
@@ -73,12 +76,39 @@ public class Recipe {
     }
 
 
-    public int getPrepTime() {
-        return prepTime;
+    public Integer getPrepTimeMinutes() {
+        return prepTimeMinutes;
     }
 
-    public void setPrepTime(int prepTime) {
-        this.prepTime = prepTime;
+    public void setPrepTimeMinutes(Integer prepTimeMinutes) {
+        this.prepTimeMinutes = prepTimeMinutes;
+    }
+
+
+    public Integer getServings() {
+        return servings;
+    }
+
+    public void setServings(Integer servings) {
+        this.servings = servings;
+    }
+
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 

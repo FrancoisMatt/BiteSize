@@ -21,74 +21,29 @@ import retrofit2.Response;
 
 public class ProfilePage extends AppCompatActivity {
 
-    // =====================================================
-    // FIELDS
-    // =====================================================
-
+    // Fields
     private EditText txtFirstname;
     private EditText txtSurname;
     private EditText txtEmail;
     private EditText txtUsername;
 
+    // Buttons
     private Button btnUpdate;
     private Button btnChangePassword;
 
+    // API
     private UserApi userApi;
 
+    // Logged-in user
+    private int userId;
     private User currentUser;
 
-    private int userId = -1;
-
-
-    // =====================================================
-    // ON CREATE
-    // =====================================================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.profilepage);
-
-
-        // =====================================================
-        // GET LOGGED-IN USER
-        // =====================================================
-
-        SharedPreferences preferences =
-                getSharedPreferences(
-                        "BiteSizePrefs",
-                        MODE_PRIVATE
-                );
-
-        userId =
-                preferences.getInt(
-                        "USER_ID",
-                        -1
-                );
-
-
-        if (userId == -1) {
-
-            Toast.makeText(
-                    this,
-                    "Please login first",
-                    Toast.LENGTH_SHORT
-            ).show();
-
-            Intent intent =
-                    new Intent(
-                            ProfilePage.this,
-                            LoginPage.class
-                    );
-
-            startActivity(intent);
-
-            finish();
-
-            return;
-        }
 
 
         // =====================================================
@@ -125,6 +80,37 @@ public class ProfilePage extends AppCompatActivity {
 
 
         // =====================================================
+        // GET LOGGED-IN USER ID
+        // =====================================================
+
+        SharedPreferences preferences =
+                getSharedPreferences(
+                        "BiteSizePrefs",
+                        MODE_PRIVATE
+                );
+
+
+        userId =
+                preferences.getInt(
+                        "USER_ID",
+                        -1
+                );
+
+
+        // Check whether user ID exists
+        if (userId == -1) {
+
+            Toast.makeText(
+                    ProfilePage.this,
+                    "No logged-in user found",
+                    Toast.LENGTH_LONG
+            ).show();
+
+            return;
+        }
+
+
+        // =====================================================
         // LOAD PROFILE
         // =====================================================
 
@@ -157,55 +143,68 @@ public class ProfilePage extends AppCompatActivity {
     }
 
 
-    // =====================================================
-    // LOAD PROFILE
-    // =====================================================
+    // =========================================================
+    // LOAD PROFILE FROM API
+    // =========================================================
 
     private void loadProfile() {
 
         userApi
-                .getUser(userId)
+                .getUserById(userId)
                 .enqueue(new Callback<User>() {
+
 
                     @Override
                     public void onResponse(
                             Call<User> call,
                             Response<User> response) {
 
+
                         if (response.isSuccessful()
                                 && response.body() != null) {
+
 
                             currentUser =
                                     response.body();
 
 
+                            // First Name
                             txtFirstname.setText(
                                     currentUser.getFirstName()
                             );
 
+
+                            // Last Name
                             txtSurname.setText(
                                     currentUser.getLastName()
                             );
 
+
+                            // Email
                             txtEmail.setText(
                                     currentUser.getEmail()
                             );
 
 
-                            // There is currently no username
-                            // column in the users table.
+                            /*
+                             * Your database does not currently
+                             * have a separate username field.
+                             *
+                             * The app currently uses email
+                             * as the login username.
+                             */
                             txtUsername.setText(
-                                    "User ID: "
-                                            + currentUser.getUserId()
+                                    currentUser.getEmail()
                             );
+
 
                         } else {
 
+
                             Toast.makeText(
                                     ProfilePage.this,
-                                    "Unable to load profile. Code: "
-                                            + response.code(),
-                                    Toast.LENGTH_LONG
+                                    "Unable to load profile",
+                                    Toast.LENGTH_SHORT
                             ).show();
                         }
                     }
@@ -214,12 +213,13 @@ public class ProfilePage extends AppCompatActivity {
                     @Override
                     public void onFailure(
                             Call<User> call,
-                            Throwable throwable) {
+                            Throwable t) {
+
 
                         Toast.makeText(
                                 ProfilePage.this,
-                                "API Error: "
-                                        + throwable.getMessage(),
+                                "Unable to connect to server: "
+                                        + t.getMessage(),
                                 Toast.LENGTH_LONG
                         ).show();
                     }
@@ -227,11 +227,12 @@ public class ProfilePage extends AppCompatActivity {
     }
 
 
-    // =====================================================
+    // =========================================================
     // UPDATE PROFILE
-    // =====================================================
+    // =========================================================
 
     private void updateProfile() {
+
 
         String firstname =
                 txtFirstname
@@ -239,11 +240,13 @@ public class ProfilePage extends AppCompatActivity {
                         .toString()
                         .trim();
 
+
         String surname =
                 txtSurname
                         .getText()
                         .toString()
                         .trim();
+
 
         String email =
                 txtEmail
@@ -306,10 +309,14 @@ public class ProfilePage extends AppCompatActivity {
         }
 
 
+        // =====================================================
+        // MAKE SURE PROFILE WAS LOADED
+        // =====================================================
+
         if (currentUser == null) {
 
             Toast.makeText(
-                    this,
+                    ProfilePage.this,
                     "Profile has not loaded yet",
                     Toast.LENGTH_SHORT
             ).show();
@@ -339,9 +346,6 @@ public class ProfilePage extends AppCompatActivity {
         // SEND UPDATE TO API
         // =====================================================
 
-        btnUpdate.setEnabled(false);
-
-
         userApi
                 .updateUser(
                         userId,
@@ -349,40 +353,54 @@ public class ProfilePage extends AppCompatActivity {
                 )
                 .enqueue(new Callback<User>() {
 
+
                     @Override
                     public void onResponse(
                             Call<User> call,
                             Response<User> response) {
 
-                        btnUpdate.setEnabled(true);
-
 
                         if (response.isSuccessful()
                                 && response.body() != null) {
+
 
                             currentUser =
                                     response.body();
 
 
-                            // Update locally stored login information
-
+                            // Update locally saved details
                             SharedPreferences preferences =
                                     getSharedPreferences(
                                             "BiteSizePrefs",
                                             MODE_PRIVATE
                                     );
 
+
                             preferences
                                     .edit()
+
+                                    .putString(
+                                            "USER_FIRST_NAME",
+                                            currentUser.getFirstName()
+                                    )
+
+                                    .putString(
+                                            "USER_LAST_NAME",
+                                            currentUser.getLastName()
+                                    )
+
                                     .putString(
                                             "USER_EMAIL",
                                             currentUser.getEmail()
                                     )
-                                    .putString(
-                                            "USER_NAME",
-                                            currentUser.getFirstName()
-                                    )
+
                                     .apply();
+
+
+                            // Update username display
+                            txtUsername.setText(
+                                    currentUser.getEmail()
+                            );
 
 
                             Toast.makeText(
@@ -391,13 +409,14 @@ public class ProfilePage extends AppCompatActivity {
                                     Toast.LENGTH_SHORT
                             ).show();
 
+
                         } else {
+
 
                             Toast.makeText(
                                     ProfilePage.this,
-                                    "Unable to update profile. Code: "
-                                            + response.code(),
-                                    Toast.LENGTH_LONG
+                                    "Unable to update profile",
+                                    Toast.LENGTH_SHORT
                             ).show();
                         }
                     }
@@ -406,15 +425,13 @@ public class ProfilePage extends AppCompatActivity {
                     @Override
                     public void onFailure(
                             Call<User> call,
-                            Throwable throwable) {
-
-                        btnUpdate.setEnabled(true);
+                            Throwable t) {
 
 
                         Toast.makeText(
                                 ProfilePage.this,
-                                "API Error: "
-                                        + throwable.getMessage(),
+                                "Unable to connect to server: "
+                                        + t.getMessage(),
                                 Toast.LENGTH_LONG
                         ).show();
                     }
