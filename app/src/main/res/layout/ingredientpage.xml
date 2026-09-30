@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <!-- Main Page -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,15 +28,26 @@
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
-            <!-- Ingredient Name -->
-            <EditText
-                android:id="@+id/txtIngredientName"
+
+            <!-- Ingredient Heading -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingredient Name"
-                android:inputType="textCapWords"
-                android:padding="12dp"
-                android:singleLine="true" />
+                android:layout_marginBottom="5dp"
+                android:text="Ingredient"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+
+            <!-- Ingredient Dropdown -->
+            <Spinner
+                android:id="@+id/spinnerIngredient"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="#D9D9D9"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
 
             <!-- Quantity -->
             <EditText
@@ -50,6 +60,7 @@
                 android:padding="12dp"
                 android:singleLine="true" />
 
+
             <!-- Unit Heading -->
             <TextView
                 android:layout_width="match_parent"
@@ -60,6 +71,7 @@
                 android:textColor="#333333"
                 android:textSize="16sp" />
 
+
             <!-- Unit Dropdown -->
             <Spinner
                 android:id="@+id/spinnerUnit"
@@ -68,6 +80,7 @@
                 android:background="#D9D9D9"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp" />
+
 
             <!-- Expiry Date Heading -->
             <TextView
@@ -78,6 +91,7 @@
                 android:text="Expiry Date"
                 android:textColor="#333333"
                 android:textSize="16sp" />
+
 
             <!-- Expiry Date -->
             <EditText
@@ -91,7 +105,8 @@
                 android:padding="12dp"
                 android:singleLine="true" />
 
-            <!-- Save -->
+
+            <!-- Save / Update -->
             <Button
                 android:id="@+id/btnSaveIngredient"
                 android:layout_width="match_parent"
@@ -99,6 +114,7 @@
                 android:layout_marginTop="30dp"
                 android:text="Save Ingredient"
                 android:textSize="16sp" />
+
 
             <!-- Delete -->
             <Button

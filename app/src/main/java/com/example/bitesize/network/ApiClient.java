@@ -7,7 +7,7 @@ public class ApiClient {
 
     // Android Emulator uses 10.0.2.2 to access the PC's localhost
     private static final String BASE_URL =
-            "http://10.0.2.2:8080/";
+            "http://192.168.3.7:8080/";
 
     private static Retrofit retrofit;
 

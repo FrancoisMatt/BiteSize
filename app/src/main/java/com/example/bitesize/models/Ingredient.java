@@ -2,9 +2,19 @@ package com.example.bitesize.models;
 
 public class Ingredient {
 
-    // Fields
+    // =====================================================
+    // FIELDS
+    // =====================================================
+
+    // Pantry record ID
+    // Used for updating and deleting a pantry item
     private int pantryItemId;
+
+    // User who owns the pantry item
     private int userId;
+
+    // Ingredient master record ID
+    // Used for recipe matching
     private int ingredientId;
 
     private String name;
@@ -13,13 +23,20 @@ public class Ingredient {
     private String expiryDate;
 
 
-    // Empty constructor for Retrofit/Gson
+    // =====================================================
+    // EMPTY CONSTRUCTOR
+    // Required for Retrofit / Gson
+    // =====================================================
+
     public Ingredient() {
     }
 
 
-    // Existing constructor
-    // Keeps your current test data / strict matcher working
+    // =====================================================
+    // EXISTING CONSTRUCTOR
+    // Used by current recipe matching / temporary data
+    // =====================================================
+
     public Ingredient(
             int id,
             String name,
@@ -35,7 +52,29 @@ public class Ingredient {
     }
 
 
-    // Pantry Item ID
+    // =====================================================
+    // API CONSTRUCTOR
+    // Used when creating/updating pantry items
+    // =====================================================
+
+    public Ingredient(
+            int userId,
+            int ingredientId,
+            double quantity,
+            String unit,
+            String expiryDate) {
+
+        this.userId = userId;
+        this.ingredientId = ingredientId;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.expiryDate = expiryDate;
+    }
+
+
+    // =====================================================
+    // PANTRY ITEM ID
+    // =====================================================
 
     public int getPantryItemId() {
         return pantryItemId;
@@ -46,7 +85,9 @@ public class Ingredient {
     }
 
 
-    // User ID
+    // =====================================================
+    // USER ID
+    // =====================================================
 
     public int getUserId() {
         return userId;
@@ -57,7 +98,9 @@ public class Ingredient {
     }
 
 
-    // Ingredient ID
+    // =====================================================
+    // INGREDIENT ID
+    // =====================================================
 
     public int getIngredientId() {
         return ingredientId;
@@ -68,7 +111,10 @@ public class Ingredient {
     }
 
 
-    // Keep old getId/setId so existing code doesn't break
+    // =====================================================
+    // OLD ID METHODS
+    // Keep these so existing code does not break
+    // =====================================================
 
     public int getId() {
         return ingredientId;
@@ -79,7 +125,9 @@ public class Ingredient {
     }
 
 
-    // Name
+    // =====================================================
+    // NAME
+    // =====================================================
 
     public String getName() {
         return name;
@@ -90,7 +138,9 @@ public class Ingredient {
     }
 
 
-    // Quantity
+    // =====================================================
+    // QUANTITY
+    // =====================================================
 
     public double getQuantity() {
         return quantity;
@@ -101,7 +151,9 @@ public class Ingredient {
     }
 
 
-    // Unit
+    // =====================================================
+    // UNIT
+    // =====================================================
 
     public String getUnit() {
         return unit;
@@ -112,7 +164,9 @@ public class Ingredient {
     }
 
 
-    // Expiry Date
+    // =====================================================
+    // EXPIRY DATE
+    // =====================================================
 
     public String getExpiryDate() {
         return expiryDate;
