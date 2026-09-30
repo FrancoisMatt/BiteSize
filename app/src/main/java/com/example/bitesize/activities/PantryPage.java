@@ -1,6 +1,7 @@
 package com.example.bitesize.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +28,10 @@ import retrofit2.Response;
 
 public class PantryPage extends AppCompatActivity {
 
+    // =====================================================
+    // FIELDS
+    // =====================================================
+
     private EditText txtSearchIngredient;
     private RecyclerView recyclerPantry;
     private Button btnAddIngredient;
@@ -36,15 +41,61 @@ public class PantryPage extends AppCompatActivity {
 
     private PantryApi pantryApi;
 
-    // Temporary until real login is connected
-    private static final int USER_ID = 1;
+    // Logged-in user
+    private int userId = -1;
 
+
+    // =====================================================
+    // ON CREATE
+    // =====================================================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.pantrypage);
+
+
+        // =====================================================
+        // GET LOGGED-IN USER
+        // =====================================================
+
+        SharedPreferences preferences =
+                getSharedPreferences(
+                        "BiteSizePrefs",
+                        MODE_PRIVATE
+                );
+
+        userId =
+                preferences.getInt(
+                        "USER_ID",
+                        -1
+                );
+
+
+        // User has not logged in
+        if (userId == -1) {
+
+            Toast.makeText(
+                    this,
+                    "Please login first",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+
+            Intent intent =
+                    new Intent(
+                            PantryPage.this,
+                            LoginPage.class
+                    );
+
+            startActivity(intent);
+
+            finish();
+
+            return;
+        }
 
 
         // =====================================================
@@ -52,20 +103,27 @@ public class PantryPage extends AppCompatActivity {
         // =====================================================
 
         txtSearchIngredient =
-                findViewById(R.id.txtSearchIngredient);
+                findViewById(
+                        R.id.txtSearchIngredient
+                );
 
         recyclerPantry =
-                findViewById(R.id.recyclerPantry);
+                findViewById(
+                        R.id.recyclerPantry
+                );
 
         btnAddIngredient =
-                findViewById(R.id.btnAddIngredient);
+                findViewById(
+                        R.id.btnAddIngredient
+                );
 
 
         // =====================================================
         // INGREDIENT LIST
         // =====================================================
 
-        ingredientList = new ArrayList<>();
+        ingredientList =
+                new ArrayList<>();
 
 
         // =====================================================
@@ -99,10 +157,6 @@ public class PantryPage extends AppCompatActivity {
                         .create(PantryApi.class);
 
 
-        // Load pantry from PostgreSQL
-        loadPantry();
-
-
         // =====================================================
         // ADD INGREDIENT
         // =====================================================
@@ -132,6 +186,7 @@ public class PantryPage extends AppCompatActivity {
                             int start,
                             int count,
                             int after) {
+
                     }
 
 
@@ -151,6 +206,7 @@ public class PantryPage extends AppCompatActivity {
                     @Override
                     public void afterTextChanged(
                             Editable s) {
+
                     }
                 }
         );
@@ -163,62 +219,72 @@ public class PantryPage extends AppCompatActivity {
 
     private void loadPantry() {
 
+        // Important:
+        // Uses logged-in user instead of USER_ID = 1
+
         Call<List<Ingredient>> call =
-                pantryApi.getPantryByUser(USER_ID);
+                pantryApi.getPantryByUser(
+                        userId
+                );
 
 
-        call.enqueue(new Callback<List<Ingredient>>() {
+        call.enqueue(
+                new Callback<List<Ingredient>>() {
 
-            @Override
-            public void onResponse(
-                    Call<List<Ingredient>> call,
-                    Response<List<Ingredient>> response) {
-
-                if (response.isSuccessful()
-                        && response.body() != null) {
-
-                    ingredientList.clear();
-
-                    ingredientList.addAll(
-                            response.body()
-                    );
-
-                    pantryAdapter.notifyDataSetChanged();
+                    @Override
+                    public void onResponse(
+                            Call<List<Ingredient>> call,
+                            Response<List<Ingredient>> response) {
 
 
-                    if (ingredientList.isEmpty()) {
+                        if (response.isSuccessful()
+                                && response.body() != null) {
+
+
+                            /*
+                             * updateData updates both the displayed
+                             * list and the full search/filter list.
+                             */
+                            pantryAdapter.updateData(
+                                    response.body()
+                            );
+
+
+                            if (response.body().isEmpty()) {
+
+                                Toast.makeText(
+                                        PantryPage.this,
+                                        "Your pantry is empty",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+
+                        } else {
+
+                            Toast.makeText(
+                                    PantryPage.this,
+                                    "Unable to load pantry",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(
+                            Call<List<Ingredient>> call,
+                            Throwable throwable) {
+
 
                         Toast.makeText(
                                 PantryPage.this,
-                                "Your pantry is empty",
-                                Toast.LENGTH_SHORT
+                                "API Error: "
+                                        + throwable.getMessage(),
+                                Toast.LENGTH_LONG
                         ).show();
                     }
-
-                } else {
-
-                    Toast.makeText(
-                            PantryPage.this,
-                            "Unable to load pantry",
-                            Toast.LENGTH_SHORT
-                    ).show();
                 }
-            }
-
-
-            @Override
-            public void onFailure(
-                    Call<List<Ingredient>> call,
-                    Throwable throwable) {
-
-                Toast.makeText(
-                        PantryPage.this,
-                        "API Error: "
-                                + throwable.getMessage(),
-                        Toast.LENGTH_LONG
-                ).show();
-            }
-        });
+        );
     }
 
 
@@ -228,9 +294,13 @@ public class PantryPage extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
         super.onResume();
 
-        if (pantryApi != null) {
+
+        if (pantryApi != null
+                && userId != -1) {
+
             loadPantry();
         }
     }

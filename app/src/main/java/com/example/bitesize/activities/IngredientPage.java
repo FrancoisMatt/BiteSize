@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,8 +64,7 @@ public class IngredientPage extends AppCompatActivity {
             new ArrayList<>();
 
 
-    // Temporary until login is connected
-    private static final int USER_ID = 1;
+    private int userId = -1;
 
 
     // Pantry row ID
@@ -83,6 +84,44 @@ public class IngredientPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.ingredientpage);
+        // =====================================================
+// GET LOGGED-IN USER
+// =====================================================
+
+        SharedPreferences preferences =
+                getSharedPreferences(
+                        "BiteSizePrefs",
+                        MODE_PRIVATE
+                );
+
+        userId =
+                preferences.getInt(
+                        "USER_ID",
+                        -1
+                );
+
+
+// No logged-in user
+        if (userId == -1) {
+
+            Toast.makeText(
+                    this,
+                    "Please login first",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            Intent intent =
+                    new Intent(
+                            IngredientPage.this,
+                            LoginPage.class
+                    );
+
+            startActivity(intent);
+
+            finish();
+
+            return;
+        }
 
 
         // =====================================================
@@ -675,7 +714,7 @@ public class IngredientPage extends AppCompatActivity {
 
         Ingredient ingredient =
                 new Ingredient(
-                        USER_ID,
+                        userId,
                         selectedIngredientId,
                         quantity,
                         unit,
@@ -749,7 +788,7 @@ public class IngredientPage extends AppCompatActivity {
 
         Ingredient ingredient =
                 new Ingredient(
-                        USER_ID,
+                        userId,
                         selectedIngredientId,
                         quantity,
                         unit,
