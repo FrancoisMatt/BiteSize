@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F2F2F2">
 
-    <!-- Background image -->
-
+    <!-- Background Image -->
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="match_parent"
@@ -16,117 +15,108 @@
         android:scaleType="centerCrop"
         android:contentDescription="@null" />
 
-    <!-- Scrollable -->
+    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-    <!-- Create Account -->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:background="#EFFFFFFF"
-        android:orientation="vertical"
-        android:padding="25dp">
-
-        <!-- Header -->
-
-        <TextView
-            android:id="@+id/txtRegistration"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registration"
-            android:textAlignment="center"
-            android:textColor="#222222"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="#EFFFFFFF"
+            android:orientation="vertical"
+            android:padding="25dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"
-            android:text="Create your BiteSize account"
-            android:textAlignment="center"
-            android:textColor="#666666"
-            android:textSize="16sp" />
+            <!-- Header -->
+            <TextView
+                android:id="@+id/txtRegistration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Registration"
+                android:textAlignment="center"
+                android:textColor="#222222"
+                android:textSize="32sp"
+                android:textStyle="bold" />
 
-        <!-- Firstname -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:text="Create your BiteSize account"
+                android:textAlignment="center"
+                android:textColor="#666666"
+                android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/txtFirstname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Firstname"
-            android:inputType="text"
-            android:padding="12dp"
-            android:singleLine="true" />
+            <!-- First Name -->
+            <EditText
+                android:id="@+id/txtFirstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                android:inputType="textPersonName"
+                android:padding="12dp"
+                android:singleLine="true" />
 
+            <!-- Surname -->
+            <EditText
+                android:id="@+id/txtSurname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Surname"
+                android:inputType="textPersonName"
+                android:padding="12dp"
+                android:singleLine="true" />
 
-        <!-- Surname -->
+            <!-- Email -->
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:singleLine="true" />
 
-        <EditText
-            android:id="@+id/txtSurname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Surname"
-            android:inputType="text"
-            android:padding="12dp"
-            android:singleLine="true" />
+            <!-- Password -->
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:singleLine="true" />
 
-        <!-- Email -->
+            <!-- Confirm Password -->
+            <EditText
+                android:id="@+id/txtConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:singleLine="true" />
 
-        <EditText
-            android:id="@+id/txtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="12dp"
-            android:singleLine="true" />
+            <!-- Create Account -->
+            <Button
+                android:id="@+id/btnCreate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Create Account"
+                android:textSize="16sp" />
 
-        <!-- Username -->
-
-        <EditText
-            android:id="@+id/txtUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="text"
-            android:padding="12dp"
-            android:singleLine="true" />
-
-        <!-- Password -->
-
-        <EditText
-            android:id="@+id/txtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="12dp"
-            android:singleLine="true" />
-
-        <!-- Create User -->
-
-        <Button
-            android:id="@+id/btnCreate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Create Account"
-            android:textSize="16sp" />
-
-    </LinearLayout>
+        </LinearLayout>
 
     </ScrollView>
 
 </FrameLayout>
-
-
