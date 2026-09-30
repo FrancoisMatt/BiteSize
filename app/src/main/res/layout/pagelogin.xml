@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Background image -->
-
+    <!-- Background Image -->
     <ImageView
         android:id="@+id/imgBackground"
         android:layout_width="match_parent"
@@ -15,8 +14,8 @@
         android:scaleType="centerCrop"
         android:contentDescription="@null" />
 
-    <!-- Login content -->
 
+    <!-- Login Content -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,8 +26,8 @@
         android:padding="25dp"
         android:background="#EFFFFFFF">
 
-        <!-- Header -->
 
+        <!-- Header -->
         <TextView
             android:id="@+id/txtWelcome"
             android:layout_width="match_parent"
@@ -38,6 +37,7 @@
             android:textSize="32sp"
             android:textStyle="bold"
             android:textColor="#222222" />
+
 
         <TextView
             android:layout_width="match_parent"
@@ -49,19 +49,19 @@
             android:textSize="16sp"
             android:textColor="#666666" />
 
-        <!-- Username -->
 
+        <!-- Email -->
         <EditText
-            android:id="@+id/txtUsername"
+            android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="text"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
             android:padding="12dp"
             android:singleLine="true" />
 
-        <!-- Password -->
 
+        <!-- Password -->
         <EditText
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
@@ -72,8 +72,8 @@
             android:padding="12dp"
             android:singleLine="true" />
 
-        <!-- Forgot Password -->
 
+        <!-- Forgot Password -->
         <TextView
             android:id="@+id/txtForgotPassword"
             android:layout_width="wrap_content"
@@ -85,8 +85,8 @@
             android:textColor="#1565C0"
             android:textStyle="bold" />
 
-        <!-- Login -->
 
+        <!-- Login Button -->
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
@@ -95,8 +95,8 @@
             android:text="Login"
             android:textSize="16sp" />
 
-        <!-- Create Account -->
 
+        <!-- Create Account -->
         <TextView
             android:id="@+id/txtCreateAccount"
             android:layout_width="match_parent"

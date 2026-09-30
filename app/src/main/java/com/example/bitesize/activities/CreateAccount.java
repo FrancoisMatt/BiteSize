@@ -1,5 +1,6 @@
 package com.example.bitesize.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -9,123 +10,358 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bitesize.R;
+import com.example.bitesize.models.User;
+import com.example.bitesize.network.ApiClient;
+import com.example.bitesize.network.UserApi;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreateAccount extends AppCompatActivity {
 
-    // Fields
+    // =====================================================
+    // FIELDS
+    // =====================================================
+
     private EditText txtFirstname;
     private EditText txtSurname;
-    private EditText txtUsername;
     private EditText txtEmail;
     private EditText txtPassword;
+    private EditText txtConfirmPassword;
 
     private Button btnCreate;
 
+    private UserApi userApi;
+
+
+    // =====================================================
+    // ON CREATE
+    // =====================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.createaccount);
 
-        // Link Java with XML
-        txtFirstname = findViewById(R.id.txtFirstname);
-        txtSurname = findViewById(R.id.txtSurname);
-        txtUsername = findViewById(R.id.txtUsername);
-        txtEmail = findViewById(R.id.txtEmail);
-        txtPassword = findViewById(R.id.txtPassword);
 
-        // IMPORTANT - link the button
-        btnCreate = findViewById(R.id.btnCreate);
+        // =====================================================
+        // LINK JAVA WITH XML
+        // =====================================================
 
-        // Create Account
-        btnCreate.setOnClickListener(view -> createUser());
+        txtFirstname =
+                findViewById(R.id.txtFirstname);
+
+        txtSurname =
+                findViewById(R.id.txtSurname);
+
+        txtEmail =
+                findViewById(R.id.txtEmail);
+
+        txtPassword =
+                findViewById(R.id.txtPassword);
+
+        txtConfirmPassword =
+                findViewById(R.id.txtConfirmPassword);
+
+        btnCreate =
+                findViewById(R.id.btnCreate);
+
+
+        // =====================================================
+        // API
+        // =====================================================
+
+        userApi =
+                ApiClient
+                        .getClient()
+                        .create(UserApi.class);
+
+
+        // =====================================================
+        // CREATE ACCOUNT
+        // =====================================================
+
+        btnCreate.setOnClickListener(
+                view -> createUser()
+        );
     }
+
+
+    // =====================================================
+    // CREATE USER
+    // =====================================================
 
     private void createUser() {
 
         String firstname =
-                txtFirstname.getText().toString().trim();
+                txtFirstname
+                        .getText()
+                        .toString()
+                        .trim();
 
         String surname =
-                txtSurname.getText().toString().trim();
-
-        String username =
-                txtUsername.getText().toString().trim();
+                txtSurname
+                        .getText()
+                        .toString()
+                        .trim();
 
         String email =
-                txtEmail.getText().toString().trim();
+                txtEmail
+                        .getText()
+                        .toString()
+                        .trim();
 
         String password =
-                txtPassword.getText().toString().trim();
+                txtPassword
+                        .getText()
+                        .toString()
+                        .trim();
+
+        String confirmPassword =
+                txtConfirmPassword
+                        .getText()
+                        .toString()
+                        .trim();
 
 
-        // First Name
+        // =====================================================
+        // FIRST NAME VALIDATION
+        // =====================================================
+
         if (TextUtils.isEmpty(firstname)) {
-            txtFirstname.setError("First name is required");
+
+            txtFirstname.setError(
+                    "First name is required"
+            );
+
             txtFirstname.requestFocus();
+
             return;
         }
 
 
-        // Surname
+        // =====================================================
+        // SURNAME VALIDATION
+        // =====================================================
+
         if (TextUtils.isEmpty(surname)) {
-            txtSurname.setError("Surname is required");
+
+            txtSurname.setError(
+                    "Surname is required"
+            );
+
             txtSurname.requestFocus();
+
             return;
         }
 
 
-        // Email
+        // =====================================================
+        // EMAIL VALIDATION
+        // =====================================================
+
         if (TextUtils.isEmpty(email)) {
-            txtEmail.setError("Email is required");
+
+            txtEmail.setError(
+                    "Email is required"
+            );
+
             txtEmail.requestFocus();
+
             return;
         }
 
 
-        // Email Format
         if (!android.util.Patterns.EMAIL_ADDRESS
                 .matcher(email)
                 .matches()) {
 
-            txtEmail.setError("Please enter a valid email");
+            txtEmail.setError(
+                    "Please enter a valid email"
+            );
+
             txtEmail.requestFocus();
+
             return;
         }
 
 
-        // Username
-        if (TextUtils.isEmpty(username)) {
-            txtUsername.setError("Username is required");
-            txtUsername.requestFocus();
-            return;
-        }
+        // =====================================================
+        // PASSWORD VALIDATION
+        // =====================================================
 
-
-        // Password
         if (TextUtils.isEmpty(password)) {
-            txtPassword.setError("Password is required");
+
+            txtPassword.setError(
+                    "Password is required"
+            );
+
             txtPassword.requestFocus();
+
             return;
         }
 
 
-        /*
-         * API call will be added later.
-         *
-         * POST /users
-         *
-         * firstname
-         * surname
-         * email
-         * username
-         * password
-         */
+        if (password.length() < 6) {
+
+            txtPassword.setError(
+                    "Password must be at least 6 characters"
+            );
+
+            txtPassword.requestFocus();
+
+            return;
+        }
 
 
-        Toast.makeText(
-                CreateAccount.this,
-                "Account details validated successfully",
-                Toast.LENGTH_SHORT
-        ).show();
+        // =====================================================
+        // CONFIRM PASSWORD
+        // =====================================================
+
+        if (TextUtils.isEmpty(confirmPassword)) {
+
+            txtConfirmPassword.setError(
+                    "Please confirm your password"
+            );
+
+            txtConfirmPassword.requestFocus();
+
+            return;
+        }
+
+
+        if (!password.equals(confirmPassword)) {
+
+            txtConfirmPassword.setError(
+                    "Passwords do not match"
+            );
+
+            txtConfirmPassword.requestFocus();
+
+            return;
+        }
+
+
+        // =====================================================
+        // CREATE USER OBJECT
+        // =====================================================
+
+        User newUser =
+                new User(
+                        firstname,
+                        surname,
+                        email,
+                        password
+                );
+
+
+        // =====================================================
+        // CALL API
+        // =====================================================
+
+        btnCreate.setEnabled(false);
+
+
+        userApi
+                .createUser(newUser)
+                .enqueue(new Callback<User>() {
+
+                    @Override
+                    public void onResponse(
+                            Call<User> call,
+                            Response<User> response) {
+
+
+                        btnCreate.setEnabled(true);
+
+
+                        // =====================================
+                        // ACCOUNT CREATED
+                        // =====================================
+
+                        if (response.isSuccessful()
+                                && response.body() != null) {
+
+
+                            Toast.makeText(
+                                    CreateAccount.this,
+                                    "Account created successfully",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+
+                            // Return to login page
+
+                            Intent intent =
+                                    new Intent(
+                                            CreateAccount.this,
+                                            LoginPage.class
+                                    );
+
+
+                            // Prevent returning to
+                            // registration with Back
+
+                            intent.addFlags(
+                                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            );
+
+
+                            startActivity(intent);
+
+                            finish();
+                        }
+
+
+                        // =====================================
+                        // DUPLICATE / BAD REQUEST
+                        // =====================================
+
+                        else if (response.code() == 409) {
+
+                            txtEmail.setError(
+                                    "An account with this email already exists"
+                            );
+
+                            txtEmail.requestFocus();
+                        }
+
+
+                        // =====================================
+                        // OTHER ERROR
+                        // =====================================
+
+                        else {
+
+                            Toast.makeText(
+                                    CreateAccount.this,
+                                    "Unable to create account. Code: "
+                                            + response.code(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    }
+
+
+                    @Override
+                    public void onFailure(
+                            Call<User> call,
+                            Throwable throwable) {
+
+
+                        btnCreate.setEnabled(true);
+
+
+                        Toast.makeText(
+                                CreateAccount.this,
+                                "API Error: "
+                                        + throwable.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
     }
 }
