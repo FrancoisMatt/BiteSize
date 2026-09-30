@@ -249,13 +249,18 @@ public class CreateAccount extends AppCompatActivity {
         // CREATE USER OBJECT
         // =====================================================
 
-        User newUser =
-                new User(
-                        firstname,
-                        surname,
-                        email,
-                        password
-                );
+        User newUser = new User();
+
+        newUser.setFirstName(firstname);
+        newUser.setLastName(surname);
+        newUser.setEmail(email);
+        newUser.setPasswordHash(password);
+
+// Default settings for new users
+        newUser.setPushNotifications(true);
+        newUser.setExpiryNotifications(true);
+        newUser.setExpiryNotificationDays(3);
+        newUser.setDarkMode(false);
 
 
         // =====================================================

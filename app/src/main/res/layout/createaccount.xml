@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@color/page_background">
 
     <!-- Background Image -->
     <ImageView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="Registration"
                 android:textAlignment="center"
-                android:textColor="#222222"
+                android:textColor="@color/primary_text"
                 android:textSize="32sp"
                 android:textStyle="bold" />
 

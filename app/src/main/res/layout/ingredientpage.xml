@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@color/page_background">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="25dp"
                 android:text="Add Ingredient"
-                android:textColor="#222222"
+                android:textColor="@color/primary_text"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:text="Ingredient"
-                android:textColor="#333333"
+                android:textColor="@color/secondary_text"
                 android:textSize="16sp" />
 
 
@@ -68,7 +68,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:text="Unit"
-                android:textColor="#333333"
+                android:textColor="@color/secondary_text"
                 android:textSize="16sp" />
 
 
@@ -89,7 +89,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="5dp"
                 android:text="Expiry Date"
-                android:textColor="#333333"
+                android:textColor="@color/secondary_text"
                 android:textSize="16sp" />
 
 

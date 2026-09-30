@@ -44,7 +44,7 @@ public class LoginPage extends AppCompatActivity {
         // =====================================================
 
         txtUsername =
-                findViewById(R.id.txtUsername);
+                findViewById(R.id.txtEmail);
 
         txtPassword =
                 findViewById(R.id.txtPassword);
